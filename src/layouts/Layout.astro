@@ -10,21 +10,17 @@ const { title = "Echophi — Virtual Omnichannel Platform" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <script is:inline>
       (function () {
         try {
           var stored = localStorage.getItem("echophi-theme");
           var theme =
-            stored === "light" || stored === "dark"
-              ? stored
-              : window.matchMedia("(prefers-color-scheme: light)").matches
-                ? "light"
-                : "dark";
+            stored === "light" || stored === "dark" ? stored : "light";
           document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {
-          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-theme", "light");
         }
       })();
     </script>
