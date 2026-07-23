@@ -1,0 +1,199 @@
+---
+import ChannelDot from "../ui/ChannelDot.astro";
+import {
+  FOOTER_PRODUCT,
+  FOOTER_COMPANY,
+  CONTACT,
+  TICKER,
+} from "../../data/home";
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="footer__mark" aria-hidden="true"></span>
+          <span class="footer__word">Echophi</span>
+        </div>
+        <p>
+          Virtual Omnichannel Platform for Voice, WhatsApp, Email & SMS, with a quality and
+          human-feedback layer on top of AI-driven conversations.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer__heading">Product</div>
+        <div class="footer__links">
+          {FOOTER_PRODUCT.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+
+      <div>
+        <div class="footer__heading">Company</div>
+        <div class="footer__links">
+          {FOOTER_COMPANY.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+
+      <div>
+        <div class="footer__heading">Contact</div>
+        <div class="footer__links">
+          <a href={CONTACT.telHref}>Call {CONTACT.tel}</a>
+          <a href={CONTACT.whatsappHref}>WhatsApp us</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__legal">
+      <span>© 2026 Echophi. All rights reserved.</span>
+      <span class="footer__legal-links">
+        <a href="#cta">Contact</a>
+        <span>Privacy</span>
+        <span>Terms</span>
+      </span>
+    </div>
+
+    <div class="footer__ticker">
+      <span class="footer__ticker-live">Live quality</span>
+      {
+        TICKER.map((t) => (
+          <span class="footer__ticker-item">
+            <ChannelDot channel={t.key} />
+            <span class="footer__ticker-label">{t.label}</span>
+            <span class="footer__ticker-score">{t.score}</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--bg);
+    padding-block: var(--sp-8) var(--sp-6);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+  }
+
+  @media (min-width: 800px) {
+    .footer__grid {
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    }
+  }
+
+  .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .footer__mark {
+    width: 14px;
+    height: 14px;
+    background: var(--blue);
+    border-radius: var(--radius);
+  }
+
+  .footer__word {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .footer__brand p {
+    margin: 0;
+    max-width: 30ch;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+
+  .footer__heading {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 14px;
+  }
+
+  .footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .footer__links a {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 150ms ease;
+  }
+
+  .footer__links a:hover {
+    color: var(--text);
+  }
+
+  .footer__legal {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+
+  .footer__legal-links {
+    display: flex;
+    gap: 18px;
+  }
+
+  .footer__legal-links a {
+    color: var(--text-faint);
+  }
+
+  .footer__ticker {
+    margin-top: 18px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    overflow-x: auto;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .footer__ticker-live,
+  .footer__ticker-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .footer__ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .footer__ticker-score {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text);
+  }
+</style>

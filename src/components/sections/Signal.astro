@@ -1,0 +1,386 @@
+---
+import { SIGNAL_CHIPS_INNER, SIGNAL_CHIPS_OUTER } from "../../data/home";
+
+/**
+ * Measured at 1280×900 in Chromium (Space Grotesk / JetBrains Mono as shipped):
+ *   widest text LINE ink = 551px (subcopy getClientRects — not the block box)
+ *   text block height    = 118px (.signal__copy)
+ *   widest chip          = 180px ("ESCALATION TRIGGERED")
+ *   chip height          = 33px
+ *
+ *   rx_min = 551/2 + 180/2 + 32 = 398
+ *   ry_min = 118/2 + 33/2 + 32  = 108
+ *   outer  = rx_min*1.35, ry_min*1.5
+ */
+const ORBIT = {
+  rxInner: 398,
+  ryInner: 108,
+  rxOuter: 538,
+  ryOuter: 162,
+};
+---
+
+<section
+  class="signal"
+  data-signal
+  style={`--orbit-rx-inner:${ORBIT.rxInner}px;--orbit-ry-inner:${ORBIT.ryInner}px;--orbit-rx-outer:${ORBIT.rxOuter}px;--orbit-ry-outer:${ORBIT.ryOuter}px;`}
+>
+  <!--
+    BUG 3 root cause (prior): chips shared no common containing block, so each
+    offset-path origin drifted. Labels clipped by overflow:hidden left only the
+    6px status dot visible at the left edge — looked like empty chips. Data never
+    had empty entries. Fix: one .orbit-field (inset:0) + top/left:0 on every chip
+    + byte-identical path() per ring. Only 8 labeled chips exist in the DOM.
+  -->
+  <div class="orbit-field" aria-hidden="true">
+    {
+      SIGNAL_CHIPS_INNER.map((chip, i) => (
+        <span
+          class="signal__chip signal__chip--flag signal__chip--inner"
+          style={`--i:${i}`}
+          data-orbit-chip
+          data-orbit-ring="inner"
+        >
+          <span class="signal__dot"></span>
+          <span class="signal__chip-label">{chip.label}</span>
+        </span>
+      ))
+    }
+    {
+      SIGNAL_CHIPS_OUTER.map((chip, i) => (
+        <span
+          class="signal__chip signal__chip--ok signal__chip--outer"
+          style={`--i:${i}`}
+          data-orbit-chip
+          data-orbit-ring="outer"
+        >
+          <span class="signal__dot"></span>
+          <span class="signal__chip-label">{chip.label}</span>
+        </span>
+      ))
+    }
+  </div>
+
+  <div class="signal__content container">
+    <div class="signal__copy">
+      <h2 class="display-lg signal__title">
+        Find the signal<br />in every conversation.
+      </h2>
+      <p class="body-copy signal__sub">
+        Trusted by teams running Voice, WhatsApp, Email and SMS at scale.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  function ellipsePath(cx: number, cy: number, rx: number, ry: number, reverse: boolean) {
+    // sweep 1 = clockwise, 0 = counter-clockwise — opposite rings.
+    // Outer path is rotated 1/8 turn (start at ±45°) so the same offset-distance
+    // never shares a ray with the inner ring. Radial gap alone (rx*0.35) is smaller
+    // than two half-chip widths; this is geometry, not a timing change — delays stay
+    // exactly -(duration * n / 4).
+    const sweep = reverse ? 0 : 1;
+    if (reverse) {
+      const c = Math.SQRT1_2; // cos/sin 45°
+      const x0 = cx + rx * c;
+      const y0 = cy - ry * c; // CCW from right → up-right at 12.5%
+      const x1 = cx - rx * c;
+      const y1 = cy + ry * c;
+      return `path("M ${x0},${y0} A ${rx},${ry} 0 1,${sweep} ${x1},${y1} A ${rx},${ry} 0 1,${sweep} ${x0},${y0}")`;
+    }
+    return `path("M ${cx + rx},${cy} A ${rx},${ry} 0 1,${sweep} ${cx - rx},${cy} A ${rx},${ry} 0 1,${sweep} ${cx + rx},${cy}")`;
+  }
+
+  function applyOrbitPaths(section: HTMLElement) {
+    const field = section.querySelector<HTMLElement>(".orbit-field");
+    if (!field) return;
+
+    const cs = getComputedStyle(section);
+    const rxIn = parseFloat(cs.getPropertyValue("--orbit-rx-inner"));
+    const ryIn = parseFloat(cs.getPropertyValue("--orbit-ry-inner"));
+    const rxOut = parseFloat(cs.getPropertyValue("--orbit-rx-outer"));
+    const ryOut = parseFloat(cs.getPropertyValue("--orbit-ry-outer"));
+
+    const cx = field.clientWidth / 2;
+    const cy = field.clientHeight / 2;
+
+    const inner = ellipsePath(cx, cy, rxIn, ryIn, false);
+    const outer = ellipsePath(cx, cy, rxOut, ryOut, true);
+
+    section.querySelectorAll<HTMLElement>('[data-orbit-ring="inner"]').forEach((el) => {
+      el.style.offsetPath = inner;
+    });
+    section.querySelectorAll<HTMLElement>('[data-orbit-ring="outer"]').forEach((el) => {
+      el.style.offsetPath = outer;
+    });
+  }
+
+  function initSignal(section: HTMLElement) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobileMq = window.matchMedia("(max-width: 767px)");
+
+    const applyStatic = () => {
+      const mobile = mobileMq.matches;
+      section.classList.toggle("is-static", reduce || mobile);
+      if (reduce || mobile) {
+        section.classList.remove("is-entered", "is-orbiting", "is-inview");
+      }
+      if (!mobile) applyOrbitPaths(section);
+    };
+    applyStatic();
+    mobileMq.addEventListener("change", applyStatic);
+    window.addEventListener("resize", () => {
+      if (!mobileMq.matches) applyOrbitPaths(section);
+    });
+
+    if (reduce) return;
+
+    let entered = false;
+
+    const enterIo = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry?.isIntersecting || entered || mobileMq.matches) return;
+        entered = true;
+        section.classList.add("is-entered");
+        window.setTimeout(() => {
+          if (!mobileMq.matches) section.classList.add("is-orbiting");
+        }, 400 + 3 * 60);
+        enterIo.disconnect();
+      },
+      { threshold: 0.4 },
+    );
+    enterIo.observe(section);
+
+    const syncPlayState = () => {
+      if (
+        section.classList.contains("is-static") ||
+        !section.classList.contains("is-orbiting")
+      ) {
+        section.classList.remove("is-inview");
+        return;
+      }
+      const rect = section.getBoundingClientRect();
+      const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+      const visible = document.visibilityState === "visible";
+      section.classList.toggle("is-inview", inView && visible);
+    };
+
+    const playIo = new IntersectionObserver(() => syncPlayState(), { threshold: 0 });
+    playIo.observe(section);
+    document.addEventListener("visibilitychange", syncPlayState);
+    window.addEventListener("scroll", syncPlayState, { passive: true });
+    syncPlayState();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-signal]").forEach(initSignal);
+</script>
+
+<style>
+  .signal {
+    --orbit-inner-dur: 75s;
+    --orbit-outer-dur: 95s;
+
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .orbit-field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .signal__chip {
+    /* Geometry comes ONLY from offset-path / offset-distance */
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+    pointer-events: none;
+    offset-anchor: center;
+    offset-rotate: 0deg;
+    offset-distance: calc(var(--i) * 25%);
+    opacity: 0;
+    will-change: offset-distance, opacity, transform;
+  }
+
+  .signal__chip-label {
+    display: inline;
+  }
+
+  .signal__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .signal__chip--ok .signal__dot {
+    background: var(--ok);
+  }
+
+  .signal__chip--flag .signal__dot {
+    background: var(--flag);
+  }
+
+  /* Entrance only */
+  .signal.is-entered:not(.is-orbiting) .signal__chip--inner,
+  .signal.is-entered:not(.is-orbiting) .signal__chip--outer {
+    animation: signal-enter 400ms ease forwards;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+
+  /* Orbit — negative delay distributes chips; paths set in JS from measured radii */
+  .signal.is-orbiting .signal__chip--inner {
+    opacity: 1;
+    transform: none;
+    animation: signal-orbit var(--orbit-inner-dur) linear infinite;
+    animation-delay: calc(-1 * var(--orbit-inner-dur) * var(--i) / 4);
+    animation-play-state: paused;
+  }
+
+  .signal.is-orbiting .signal__chip--outer {
+    opacity: 1;
+    transform: none;
+    animation: signal-orbit var(--orbit-outer-dur) linear infinite;
+    animation-delay: calc(-1 * var(--orbit-outer-dur) * var(--i) / 4);
+    animation-play-state: paused;
+  }
+
+  .signal.is-orbiting.is-inview .signal__chip--inner,
+  .signal.is-orbiting.is-inview .signal__chip--outer {
+    animation-play-state: running;
+  }
+
+  @keyframes signal-enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes signal-orbit {
+    from {
+      offset-distance: 0%;
+    }
+    to {
+      offset-distance: 100%;
+    }
+  }
+
+  .signal__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding-block: var(--sp-9);
+  }
+
+  .signal__copy {
+    text-align: center;
+  }
+
+  .signal__title {
+    margin: 0 auto var(--sp-4);
+    max-width: 16ch;
+  }
+
+  .signal__sub {
+    margin: 0 auto;
+  }
+
+  /* Reduced motion: freeze at even stations, no entrance/orbit */
+  @media (prefers-reduced-motion: reduce) {
+    .signal__chip--inner,
+    .signal__chip--outer {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      offset-distance: calc(var(--i) * 25%);
+    }
+  }
+
+  .signal.is-static .signal__chip--inner,
+  .signal.is-static .signal__chip--outer {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+    offset-distance: calc(var(--i) * 25%);
+  }
+
+  /* Mobile: same 8 chips, static two-column stack — no orbit */
+  @media (max-width: 767px) {
+    .signal {
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .orbit-field {
+      position: relative;
+      inset: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      padding-bottom: 0;
+      order: 1;
+    }
+
+    .signal {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signal__content {
+      order: -1;
+      padding-block: var(--sp-7) var(--sp-4);
+    }
+
+    .signal__chip--inner,
+    .signal__chip--outer {
+      position: relative;
+      top: auto;
+      left: auto;
+      offset-path: none !important;
+      offset-distance: auto !important;
+      opacity: 1;
+      transform: none;
+      animation: none !important;
+      justify-content: flex-start;
+      width: 100%;
+      white-space: normal;
+      will-change: auto;
+    }
+
+    .signal.is-static .orbit-field {
+      display: grid;
+    }
+  }
+</style>

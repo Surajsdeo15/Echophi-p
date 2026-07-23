@@ -1,0 +1,109 @@
+---
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  id="theme-toggle"
+  aria-label="Switch theme"
+  aria-pressed="true"
+>
+  <svg
+    class="theme-toggle__icon theme-toggle__icon--to-light"
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle cx="9" cy="9" r="3.25" stroke="currentColor" stroke-width="1"></circle>
+    <path
+      d="M9 1.75v1.5M9 14.75v1.5M1.75 9h1.5M14.75 9h1.5M3.64 3.64l1.06 1.06M13.3 13.3l1.06 1.06M14.36 3.64l-1.06 1.06M4.7 13.3l-1.06 1.06"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"></path>
+  </svg>
+  <svg
+    class="theme-toggle__icon theme-toggle__icon--to-dark"
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M15.25 10.1A6.5 6.5 0 0 1 7.9 2.75 5.25 5.25 0 1 0 15.25 10.1Z"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linejoin="round"></path>
+  </svg>
+</button>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+
+    function currentTheme() {
+      return document.documentElement.getAttribute("data-theme") === "light"
+        ? "light"
+        : "dark";
+    }
+
+    function syncPressed() {
+      var dark = currentTheme() === "dark";
+      btn.setAttribute("aria-pressed", dark ? "true" : "false");
+    }
+
+    function setTheme(next) {
+      var html = document.documentElement;
+      html.classList.add("theme-switching");
+      html.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("echophi-theme", next);
+      } catch (e) {}
+      syncPressed();
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          html.classList.remove("theme-switching");
+        });
+      });
+    }
+
+    syncPressed();
+    btn.addEventListener("click", function () {
+      setTheme(currentTheme() === "dark" ? "light" : "dark");
+    });
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--text-dim);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .theme-toggle:hover {
+    color: var(--text);
+    border-color: var(--text-faint);
+  }
+
+  .theme-toggle__icon {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .theme-toggle__icon--to-light {
+    display: block;
+  }
+
+  :global([data-theme="light"]) .theme-toggle__icon--to-dark {
+    display: block;
+  }
+</style>

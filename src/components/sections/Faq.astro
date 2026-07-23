@@ -1,0 +1,31 @@
+---
+import SectionMarker from "../ui/SectionMarker.astro";
+import FaqAccordion from "../../islands/FaqAccordion";
+import { HOME_FAQS } from "../../data/home";
+---
+
+<section class="faq" id="faq">
+  <div class="container">
+    <SectionMarker num="07" label="FAQ" />
+    <div class="faq__intro">
+      <h2 class="display-lg">Common questions</h2>
+    </div>
+    <FaqAccordion client:visible items={HOME_FAQS} />
+  </div>
+</section>
+
+<style>
+  .faq {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--sp-8);
+  }
+
+  .faq__intro {
+    margin-bottom: var(--sp-5);
+  }
+
+  .faq__intro .display-lg {
+    margin: 0;
+  }
+</style>

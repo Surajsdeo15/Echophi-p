@@ -1,0 +1,68 @@
+---
+import ChannelDot from "../ui/ChannelDot.astro";
+import { TICKER } from "../../data/home";
+---
+
+<div class="ticker">
+  <div class="ticker__inner container">
+    <span class="ticker__live">Live quality</span>
+    <div class="ticker__items">
+      {
+        TICKER.map((t) => (
+          <span class="ticker__item">
+            <ChannelDot channel={t.key} />
+            <span class="ticker__label">{t.label}</span>
+            <span class="ticker__score">{t.score}</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .ticker {
+    height: 32px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ticker__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    overflow: hidden;
+  }
+
+  .ticker__live,
+  .ticker__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .ticker__items {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    min-width: 0;
+    overflow-x: auto;
+  }
+
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .ticker__score {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text);
+  }
+</style>

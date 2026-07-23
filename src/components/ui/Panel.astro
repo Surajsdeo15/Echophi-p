@@ -1,0 +1,50 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const hasHeader = Astro.slots.has("header");
+---
+
+<div class:list={["panel", className]}>
+  {
+    hasHeader && (
+      <div class="panel__header">
+        <slot name="header" />
+      </div>
+    )
+  }
+  <div class="panel__body">
+    <slot />
+  </div>
+  {
+    Astro.slots.has("footer") && (
+      <div class="panel__footer">
+        <slot name="footer" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .panel {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .panel__header {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .panel__body {
+    padding: var(--sp-5);
+  }
+
+  .panel__footer {
+    border-top: 1px solid var(--line);
+    padding: var(--sp-4) var(--sp-5);
+  }
+</style>

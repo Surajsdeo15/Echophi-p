@@ -1,0 +1,139 @@
+---
+import Button from "../ui/Button.astro";
+import ThemeToggle from "../ui/ThemeToggle.astro";
+import { NAV_PRIMARY, NAV_CHANNELS } from "../../data/home";
+---
+
+<header class="nav">
+  <div class="nav__inner container">
+    <a class="nav__brand" href="#" aria-label="Echophi home">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span class="nav__word">Echophi</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <div class="nav__channels">
+        <span class="nav__link">Channels</span>
+        <div class="nav__channels-menu" role="list">
+          {
+            NAV_CHANNELS.map((c, i) => (
+              <>
+                {i > 0 && <span class="nav__sep" aria-hidden="true">/</span>}
+                <a class="nav__sublink" href={c.href} role="listitem">
+                  {c.label}
+                </a>
+              </>
+            ))
+          }
+        </div>
+      </div>
+      {
+        NAV_PRIMARY.map((item, i) => (
+          <>
+            <span class="nav__sep" aria-hidden="true">/</span>
+            <a class="nav__link" href={item.href}>
+              {item.label}
+            </a>
+          </>
+        ))
+      }
+    </nav>
+
+    <div class="nav__cta">
+      <ThemeToggle />
+      <Button variant="solid" href="#cta">Book a demo</Button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    min-height: 56px;
+  }
+
+  .nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav__mark {
+    width: 14px;
+    height: 14px;
+    background: var(--blue);
+    border-radius: var(--radius);
+  }
+
+  .nav__word {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .nav__links {
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (min-width: 900px) {
+    .nav__links {
+      display: flex;
+    }
+  }
+
+  .nav__link,
+  .nav__sublink {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    transition: color 150ms ease;
+  }
+
+  .nav__link:hover,
+  .nav__sublink:hover {
+    color: var(--text);
+  }
+
+  .nav__sep {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .nav__channels {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav__channels-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav__cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-3);
+  }
+</style>

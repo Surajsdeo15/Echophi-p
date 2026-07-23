@@ -1,0 +1,133 @@
+---
+import GridBackdrop from "../ui/GridBackdrop.astro";
+import TickRail from "../ui/TickRail.astro";
+import Button from "../ui/Button.astro";
+import HeroDemo from "../../islands/HeroDemo";
+import { CONTACT } from "../../data/home";
+---
+
+<section class="hero">
+  <div class="hero__grid-wrap" aria-hidden="true">
+    <GridBackdrop />
+  </div>
+  <TickRail side="left" />
+  <div class="hero__inner container">
+    <div class="hero__copy">
+      <span class="hero__badge">
+        <span class="hero__badge-dot" aria-hidden="true"></span>
+        Virtual Omnichannel Platform
+      </span>
+      <h1 class="display-xl hero__h1">
+        One platform. Every channel.<br />
+        <span class="hero__emphasis">Every conversation, quality-checked.</span>
+      </h1>
+      <p class="body-copy hero__sub">
+        Run Voice, WhatsApp, Email and SMS from one place — with a human-feedback and quality
+        layer that keeps every AI-driven conversation accurate, on-brand and always improving.
+      </p>
+      <div class="hero__ctas">
+        <Button variant="solid" href="#cta">Book a demo <span aria-hidden="true">→</span></Button>
+        <Button variant="ghost" href={CONTACT.telHref}>Talk to our AI now</Button>
+      </div>
+    </div>
+    <div class="hero__panel">
+      <HeroDemo client:visible />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-7);
+    padding-block: var(--sp-8);
+  }
+
+  @media (min-width: 980px) {
+    .hero__inner {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      padding-block: var(--sp-9);
+    }
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 7px 12px;
+    margin-bottom: var(--sp-5);
+  }
+
+  .hero__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .hero__h1 {
+    margin: 0 0 var(--sp-5);
+    max-width: 16ch;
+  }
+
+  .hero__emphasis {
+    color: var(--text);
+    background-image: linear-gradient(var(--blue), var(--blue));
+    background-repeat: no-repeat;
+    background-size: 100% 5px;
+    background-position: 0 calc(100% - 2px);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding-bottom: 2px;
+  }
+
+  .hero__sub {
+    margin: 0 0 var(--sp-6);
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    align-items: center;
+  }
+
+  .hero__ctas :global(.btn--solid) {
+    box-shadow: var(--hero-cta-glow);
+    border-color: var(--hero-cta-border);
+  }
+
+  .hero__panel {
+    min-width: 0;
+  }
+</style>

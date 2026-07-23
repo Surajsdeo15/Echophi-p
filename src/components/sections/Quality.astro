@@ -1,0 +1,128 @@
+---
+import SectionMarker from "../ui/SectionMarker.astro";
+import { LIFECYCLE } from "../../data/home";
+---
+
+<section class="quality" id="quality">
+  <div class="container">
+    <SectionMarker num="03" label="The quality layer" />
+    <div class="quality__intro">
+      <h2 class="display-lg">One closed loop, running on every conversation</h2>
+      <p class="body-copy">
+        Steps 4 and 5 are where humans teach the system.
+        <a class="quality__link" href="#quality">See the full quality layer →</a>
+      </p>
+    </div>
+
+    <div class="quality__steps">
+      {
+        LIFECYCLE.map((s, i) => (
+          <>
+            <div class:list={["quality__step", s.verified && "is-verified"]}>
+              <div class="quality__tile">{s.numLabel}</div>
+              <div class="quality__num mono-label">{s.numLabel}</div>
+              <h3 class="quality__title">{s.title}</h3>
+              <p class="quality__desc">{s.desc}</p>
+            </div>
+            {i < LIFECYCLE.length - 1 && <div class="quality__rail" aria-hidden="true" />}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .quality {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--sp-8);
+  }
+
+  .quality__intro {
+    margin-bottom: var(--sp-7);
+    max-width: 60ch;
+  }
+
+  .quality__intro .display-lg {
+    margin: 0 0 var(--sp-3);
+  }
+
+  .quality__intro .body-copy {
+    margin: 0;
+  }
+
+  .quality__link {
+    color: var(--text-dim);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .quality__steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-5);
+  }
+
+  @media (min-width: 900px) {
+    .quality__steps {
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: start;
+      gap: var(--sp-3);
+    }
+  }
+
+  .quality__tile {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: var(--sp-3);
+  }
+
+  .quality__step.is-verified .quality__tile {
+    border-color: var(--blue);
+    color: var(--text);
+  }
+
+  .quality__num {
+    margin-bottom: var(--sp-2);
+    color: var(--text-faint);
+  }
+
+  .quality__title {
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .quality__desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+
+  .quality__rail {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .quality__rail {
+      display: block;
+      height: 1px;
+      background: var(--line);
+      margin-top: 20px;
+      min-width: 16px;
+    }
+  }
+</style>

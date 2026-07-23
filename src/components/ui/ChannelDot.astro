@@ -1,0 +1,35 @@
+---
+interface Props {
+  channel: "voice" | "whatsapp" | "email" | "sms";
+}
+
+const { channel } = Astro.props;
+---
+
+<span class:list={["channel-dot", `channel-dot--${channel}`]} aria-hidden="true"></span>
+
+<style is:global>
+  .channel-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .channel-dot--voice {
+    background: var(--ch-voice);
+  }
+
+  .channel-dot--whatsapp {
+    background: var(--ch-whatsapp);
+  }
+
+  .channel-dot--email {
+    background: var(--ch-email);
+  }
+
+  .channel-dot--sms {
+    background: var(--ch-sms);
+  }
+</style>

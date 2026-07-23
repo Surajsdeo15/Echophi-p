@@ -1,0 +1,29 @@
+---
+---
+
+<div class="grid-backdrop" aria-hidden="true"></div>
+
+<style>
+  .grid-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--grid-alpha);
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        var(--line) 0,
+        var(--line) 1px,
+        transparent 1px,
+        transparent 64px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--line) 0,
+        var(--line) 1px,
+        transparent 1px,
+        transparent 64px
+      );
+  }
+</style>

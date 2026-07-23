@@ -1,0 +1,182 @@
+---
+import ChannelDot from "../ui/ChannelDot.astro";
+import SectionMarker from "../ui/SectionMarker.astro";
+import { CHANNEL_OVERVIEW } from "../../data/home";
+---
+
+<section class="channels" id="channels">
+  <div class="container">
+    <SectionMarker num="01" label="One platform, four channels" />
+    <div class="channels__intro">
+      <h2 class="display-lg">Meet customers on the channel they already use</h2>
+      <p class="body-copy">
+        Same quality layer, same dashboard, four different conversations.
+      </p>
+    </div>
+
+    <div class="channels__grid">
+      {
+        CHANNEL_OVERVIEW.map((c) => (
+          <a class="channels__cell" href="#channels">
+            <div class="channels__head">
+              <ChannelDot channel={c.key} />
+              <span class="channels__label">{c.label}</span>
+            </div>
+            <svg
+              class="channels__icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d={c.iconPath}
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+            </svg>
+            <p class="channels__blurb">{c.blurb}</p>
+            <div class="channels__media">
+              <span>{c.mediaLabel}</span>
+            </div>
+            <span class="channels__explore">
+              Explore {c.label} <span class="channels__arrow">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .channels {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--sp-8);
+  }
+
+  .channels__intro {
+    margin-bottom: var(--sp-7);
+    max-width: 60ch;
+  }
+
+  .channels__intro .display-lg {
+    margin: 0 0 var(--sp-3);
+  }
+
+  .channels__intro .body-copy {
+    margin: 0;
+  }
+
+  .channels__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .channels__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .channels__cell {
+    display: block;
+    padding: var(--sp-5);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background-color 150ms ease;
+  }
+
+  @media (min-width: 768px) {
+    .channels__cell:nth-child(2n) {
+      border-right: none;
+    }
+
+    .channels__cell:nth-last-child(-n + 2) {
+      border-bottom: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .channels__cell {
+      border-right: none;
+    }
+
+    .channels__cell:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .channels__head {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: var(--sp-4);
+  }
+
+  .channels__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .channels__icon {
+    color: var(--text-dim);
+    margin-bottom: var(--sp-3);
+  }
+
+  .channels__blurb {
+    margin: 0 0 var(--sp-4);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+
+  .channels__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    margin-bottom: var(--sp-4);
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .channels__media span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: center;
+    padding: var(--sp-3);
+  }
+
+  .channels__explore {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .channels__arrow {
+    color: inherit;
+    transition: color 150ms ease;
+  }
+
+  .channels__cell:hover .channels__arrow {
+    color: var(--blue);
+  }
+</style>

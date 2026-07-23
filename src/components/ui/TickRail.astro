@@ -1,0 +1,83 @@
+---
+interface Props {
+  side: "left" | "top";
+}
+
+const { side } = Astro.props;
+---
+
+<div class:list={["tick-rail", `tick-rail--${side}`]} aria-hidden="true"></div>
+
+<style>
+  .tick-rail {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tick-rail--left {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--line-strong) 0,
+      var(--line-strong) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+    background-size: 8px 16px;
+    background-repeat: repeat-y;
+    background-position: left top;
+    border-right: 1px solid var(--line);
+  }
+
+  .tick-rail--left::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 16px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--line-strong) 0,
+      var(--line-strong) 1px,
+      transparent 1px,
+      transparent 32px
+    );
+    background-size: 16px 32px;
+  }
+
+  .tick-rail--top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--line-strong) 0,
+      var(--line-strong) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+    background-size: 16px 8px;
+    background-repeat: repeat-x;
+    background-position: left top;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tick-rail--top::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 16px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--line-strong) 0,
+      var(--line-strong) 1px,
+      transparent 1px,
+      transparent 32px
+    );
+    background-size: 32px 16px;
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import SectionMarker from "../ui/SectionMarker.astro";
+import { COMPARISON_ROWS } from "../../data/home";
+---
+
+<section class="why" id="why">
+  <div class="container">
+    <SectionMarker num="02" label="Why Echophi" />
+    <div class="why__intro">
+      <h2 class="display-lg">
+        Not a voice bot. Not a chat plugin. One quality layer, every channel.
+      </h2>
+      <p class="body-copy">
+        Single-channel AI tools and in-house builds solve one conversation at a time. Echophi runs
+        the same scoring, compliance and human review across all four.
+      </p>
+    </div>
+
+    <div class="why__table-wrap">
+      <table class="why__table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Single-channel tools</th>
+            <th>Build in-house</th>
+            <th class="why__echophi">Echophi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            COMPARISON_ROWS.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                <td>{row.tools}</td>
+                <td>{row.diy}</td>
+                <td class="why__echophi">{row.echophi}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--sp-8);
+  }
+
+  .why__intro {
+    margin-bottom: var(--sp-7);
+    max-width: 60ch;
+  }
+
+  .why__intro .display-lg {
+    margin: 0 0 var(--sp-3);
+  }
+
+  .why__intro .body-copy {
+    margin: 0;
+  }
+
+  .why__table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+
+  .why__table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+  }
+
+  .why__table th,
+  .why__table td {
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--text-dim);
+  }
+
+  .why__table thead th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    background: var(--bg);
+  }
+
+  .why__table tbody th {
+    font-family: var(--font-display);
+    font-weight: 500;
+    color: var(--text);
+    background: var(--bg);
+    width: 22%;
+  }
+
+  .why__echophi {
+    border-left: 1px solid var(--blue) !important;
+    color: var(--text) !important;
+  }
+
+  .why__table thead .why__echophi {
+    color: var(--text) !important;
+  }
+</style>

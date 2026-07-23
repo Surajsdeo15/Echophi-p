@@ -1,0 +1,67 @@
+---
+interface Props {
+  variant?: "solid" | "ghost";
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+}
+
+const {
+  variant = "solid",
+  href,
+  type = "button",
+  class: className,
+} = Astro.props;
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class:list={["btn", `btn--${variant}`, className]}
+  href={href}
+  type={href ? undefined : type}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1.2;
+    transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  /* Solid inverts via tokens: light text on dark page → pale fill;
+     dark text on paper page → near-black fill with pale mono text. */
+  .btn--solid {
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--text);
+  }
+
+  .btn--solid:hover {
+    border-color: var(--line-strong);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line-strong);
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--text-faint);
+  }
+</style>

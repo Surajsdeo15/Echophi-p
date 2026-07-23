@@ -1,0 +1,112 @@
+---
+import ChannelDot from "../ui/ChannelDot.astro";
+import SectionMarker from "../ui/SectionMarker.astro";
+import { USE_CASES, CHANNELS } from "../../data/home";
+---
+
+<section class="usecases" id="use-cases">
+  <div class="container">
+    <SectionMarker num="04" label="Use cases" />
+    <div class="usecases__intro">
+      <h2 class="display-lg">Built for the conversations that move your business</h2>
+    </div>
+
+    <div class="usecases__grid">
+      {
+        USE_CASES.map((u) => (
+          <div class="usecases__cell">
+            <h3 class="usecases__title">{u.title}</h3>
+            <p class="usecases__desc">{u.desc}</p>
+            <div class="usecases__chips">
+              {u.channels.map((ch) => (
+                <span class="usecases__chip">
+                  <ChannelDot channel={ch} />
+                  {CHANNELS[ch].label}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .usecases {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--sp-8);
+  }
+
+  .usecases__intro {
+    margin-bottom: var(--sp-7);
+  }
+
+  .usecases__intro .display-lg {
+    margin: 0;
+    max-width: 20ch;
+  }
+
+  .usecases__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 768px) {
+    .usecases__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .usecases__grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .usecases__cell {
+    padding: var(--sp-5);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .usecases__title {
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .usecases__desc {
+    margin: 0 0 var(--sp-4);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+
+  .usecases__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .usecases__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+</style>

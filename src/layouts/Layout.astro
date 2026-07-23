@@ -1,0 +1,45 @@
+---
+import "../styles/global.css";
+import "../styles/islands.css";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Echophi — Virtual Omnichannel Platform" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("echophi-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta
+      name="description"
+      content="Virtual omnichannel platform for Voice, WhatsApp, Email and SMS with a human-feedback quality layer."
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
