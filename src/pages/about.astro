@@ -1,0 +1,172 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import Button from "../components/ui/Button.astro";
+import GridBackdrop from "../components/ui/GridBackdrop.astro";
+import TickRail from "../components/ui/TickRail.astro";
+import { ABOUT_PAGE } from "../data/about";
+
+const { company, whyQuality, cta } = ABOUT_PAGE;
+---
+
+<Layout title="Echophi — About">
+  <Ticker />
+  <Nav />
+  <main class="about-page">
+    <section class="about-company">
+      <div class="about-company__grid-wrap" aria-hidden="true">
+        <GridBackdrop />
+      </div>
+      <TickRail side="left" />
+      <div class="container about-company__inner">
+        <div class="about-eyebrow-wrap">
+          <span class="about-eyebrow">{company.eyebrow}</span>
+          <span class="about-eyebrow__rule" aria-hidden="true"></span>
+        </div>
+        <h1 class="display-lg about-company__title">{company.title}</h1>
+        {
+          company.paragraphs.map((paragraph) => (
+            <p class="body-copy about-company__p">{paragraph}</p>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="about-why">
+      <div class="container about-why__inner">
+        <div class="about-eyebrow-wrap">
+          <span class="about-eyebrow">{whyQuality.eyebrow}</span>
+          <span class="about-eyebrow__rule" aria-hidden="true"></span>
+        </div>
+        <h2 class="display-lg about-why__title">{whyQuality.title}</h2>
+        <p class="body-copy about-why__body">{whyQuality.body}</p>
+      </div>
+    </section>
+
+    <section class="about-cta">
+      <div class="container about-cta__inner">
+        <h2 class="display-lg about-cta__title">{cta.title}</h2>
+        <Button variant="solid" href={cta.primaryHref}>{cta.primaryLabel}</Button>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>
+
+<style>
+  .about-page {
+    background: var(--bg);
+  }
+
+  .about-eyebrow-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    margin-bottom: var(--sp-4);
+  }
+
+  .about-eyebrow {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .about-eyebrow__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .about-company {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .about-company__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .about-company__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .about-company__inner {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--section-pad-hero);
+  }
+
+  .about-company__title {
+    margin: 0 0 var(--sp-5);
+    max-width: 28ch;
+    text-wrap: balance;
+  }
+
+  .about-company__p {
+    margin: 0 0 var(--sp-4);
+    max-width: 66ch;
+    color: var(--text-dim);
+  }
+
+  .about-company__p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .about-why {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-why__inner {
+    padding-block: var(--section-pad);
+  }
+
+  .about-why__title {
+    margin: 0 0 var(--sp-4);
+    max-width: 20ch;
+  }
+
+  .about-why__body {
+    margin: 0;
+    max-width: 66ch;
+    color: var(--text-dim);
+  }
+
+  .about-cta {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .about-cta__inner {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--sp-4);
+  }
+
+  .about-cta__title {
+    margin: 0;
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .about-cta :global(.btn) {
+    border-radius: var(--radius);
+  }
+</style>

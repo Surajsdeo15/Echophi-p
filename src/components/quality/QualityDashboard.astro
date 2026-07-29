@@ -1,0 +1,154 @@
+---
+import { QUALITY_DASHBOARD } from "../../data/quality";
+---
+
+<section class="q-dash" id="dashboard">
+  <div class="container">
+    <div class="mono-label q-dash__eyebrow">{QUALITY_DASHBOARD.eyebrow}</div>
+    <h2 class="display-lg q-dash__title">{QUALITY_DASHBOARD.title}</h2>
+
+    <div class="q-dash__video">
+      <span class="q-dash__play" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </span>
+      <span class="q-dash__video-caption">{QUALITY_DASHBOARD.videoCaption}</span>
+    </div>
+
+    <div class="q-dash__live">
+      <div class="q-dash__live-head">
+        <span class="q-dash__live-dot" aria-hidden="true"></span>
+        <span class="q-dash__live-label">{QUALITY_DASHBOARD.liveLabel}</span>
+      </div>
+      <div class="q-dash__stats">
+        {
+          QUALITY_DASHBOARD.stats.map((stat) => (
+            <div class="q-dash__stat">
+              <div class="q-dash__stat-caption">{stat.caption}</div>
+              <div class="q-dash__stat-value">
+                {stat.value}
+                {"suffix" in stat && stat.suffix ? (
+                  <span class="q-dash__stat-suffix">{stat.suffix}</span>
+                ) : null}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .q-dash {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-dash__eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .q-dash__title {
+    margin: 0 0 var(--sp-5);
+  }
+
+  .q-dash__video {
+    aspect-ratio: 16 / 7;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: var(--sp-6);
+  }
+
+  .q-dash__play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--blue);
+    box-shadow: 0 0 28px var(--blue-dim);
+  }
+
+  .q-dash__video-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: center;
+  }
+
+  .q-dash__live {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .q-dash__live-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .q-dash__live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .q-dash__live-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .q-dash__stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
+  }
+
+  @media (min-width: 768px) {
+    .q-dash__stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .q-dash__stat-caption {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+
+  .q-dash__stat-value {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 6px;
+    color: var(--text-dim);
+  }
+
+  .q-dash__stat-suffix {
+    color: var(--blue);
+  }
+</style>

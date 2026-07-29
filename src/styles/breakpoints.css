@@ -1,0 +1,15 @@
+/**
+ * Canonical responsive scale — use ONLY these thresholds in @media rules.
+ *
+ *   sm: 640px   md: 768px   lg: 1024px   xl: 1280px
+ *
+ * Token values: --bp-sm … --bp-xl, --gutter, --maxw (tokens.css)
+ *
+ * Common patterns:
+ *   @media (min-width: 640px)  { }  sm+
+ *   @media (min-width: 768px)  { }  md+
+ *   @media (min-width: 1024px) { }  lg+
+ *   @media (min-width: 1280px) { }  xl+
+ *   @media (max-width: 767px)  { }  below md
+ *   @media (max-width: 1023px) { }  below lg
+ */

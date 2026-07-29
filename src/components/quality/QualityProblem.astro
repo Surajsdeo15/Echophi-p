@@ -1,0 +1,202 @@
+---
+import { QUALITY_PROBLEM } from "../../data/quality";
+---
+
+<section class="q-problem">
+  <div class="container">
+    <div class="mono-label q-problem__eyebrow">{QUALITY_PROBLEM.eyebrow}</div>
+    <h2 class="display-lg q-problem__title">{QUALITY_PROBLEM.title}</h2>
+    <div class="q-problem__grid bordered-grid bordered-grid--4">
+      {
+        QUALITY_PROBLEM.cards.map((card) => (
+          <div class="q-problem__card" data-tilt-card>
+            <div class="q-problem__card-face">
+              <span class="q-problem__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 3l9 16H3l9-16z"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 10v4M12 17h.01"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <h3 class="q-problem__card-title">{card.title}</h3>
+              <p class="q-problem__card-desc">{card.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function initTiltCards() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    const max = 22; // degrees — strong enough to read clearly
+
+    document.querySelectorAll<HTMLElement>("[data-tilt-card]").forEach((card) => {
+      const face = card.querySelector<HTMLElement>(".q-problem__card-face");
+      if (!face) return;
+
+      const onMove = (e: MouseEvent) => {
+        const r = card.getBoundingClientRect();
+        const px = ((e.clientX - r.left) / r.width) * 100;
+        const py = ((e.clientY - r.top) / r.height) * 100;
+        const nx = (px / 100) * 2 - 1; // -1 left … 1 right
+        const ny = (py / 100) * 2 - 1; // -1 top … 1 bottom
+        // Cursor-side lifts toward the viewer
+        const rotY = nx * max;
+        const rotX = -ny * max;
+        face.style.setProperty("--spot-x", `${px}%`);
+        face.style.setProperty("--spot-y", `${py}%`);
+        face.style.transform = `translateZ(28px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
+      };
+
+      const onLeave = () => {
+        face.style.transform = "translateZ(0) rotateX(0deg) rotateY(0deg) scale(1)";
+        face.style.removeProperty("--spot-x");
+        face.style.removeProperty("--spot-y");
+      };
+
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+    });
+  }
+
+  initTiltCards();
+</script>
+
+<style>
+  .q-problem {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-problem__eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .q-problem__title {
+    margin: 0 0 var(--sp-6);
+    max-width: 32ch;
+    text-wrap: balance;
+  }
+
+  .q-problem__grid {
+    perspective: 520px;
+    perspective-origin: 50% 40%;
+  }
+
+  .q-problem__card {
+    transform-style: preserve-3d;
+    z-index: 0;
+  }
+
+  .q-problem__card:hover {
+    z-index: 2;
+  }
+
+  .q-problem__card-face {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 18px;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: translateZ(0) rotateX(0deg) rotateY(0deg) scale(1);
+    transition: transform 160ms ease-out, border-color 150ms ease, background-color 150ms ease,
+      box-shadow 160ms ease;
+    border: 1px solid transparent;
+    background: transparent;
+    will-change: transform;
+    transform-origin: center center;
+  }
+
+  .q-problem__card-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      160px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--blue-dim),
+      transparent 68%
+    );
+    transition: opacity 180ms ease;
+  }
+
+  .q-problem__card:hover .q-problem__card-face::before {
+    opacity: 1;
+  }
+
+  .q-problem__card:hover .q-problem__card-face {
+    background: var(--bg-elev);
+    border-color: var(--line-strong);
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.28),
+      0 0 0 1px var(--line);
+    transition: transform 50ms linear, border-color 150ms ease, background-color 150ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .q-problem__icon,
+  .q-problem__card-title,
+  .q-problem__card-desc {
+    position: relative;
+    z-index: 1;
+  }
+
+  .q-problem__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .q-problem__card-title {
+    margin: 0 0 5px;
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .q-problem__card-desc {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .q-problem__card-face {
+      transition: none;
+      transform: none !important;
+    }
+  }
+
+  @media (hover: none) {
+    .q-problem__card-face {
+      transform: none !important;
+    }
+  }
+</style>

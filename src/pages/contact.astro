@@ -1,0 +1,461 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import GridBackdrop from "../components/ui/GridBackdrop.astro";
+import TickRail from "../components/ui/TickRail.astro";
+import Panel from "../components/ui/Panel.astro";
+import Button from "../components/ui/Button.astro";
+import HeroDemo from "../islands/HeroDemo";
+---
+
+<Layout title="Echophi — Contact">
+  <Ticker />
+  <Nav />
+  <main class="contact-page">
+    <section class="contact-hero">
+      <div class="contact-hero__grid-wrap" aria-hidden="true">
+        <GridBackdrop />
+      </div>
+      <TickRail side="left" />
+      <div class="container contact-hero__inner hero-2col hero-2col--contact">
+        <div class="contact-hero__copy">
+          <div class="contact-hero__eyebrow-wrap">
+            <span class="contact-hero__eyebrow">Get in touch</span>
+            <span class="contact-hero__rule" aria-hidden="true"></span>
+          </div>
+          <h1 class="display-xl contact-hero__title">Book a demo</h1>
+          <p class="body-copy contact-hero__sub">
+            Tell us what you are building, and we will show you how Echophi fits your channels
+            and quality workflow.
+          </p>
+          <ul class="contact-hero__list">
+            <li>01 End-to-end walkthrough in under 30 minutes</li>
+            <li>02 See quality checks and human review in action</li>
+            <li>03 Get a rollout plan for your current channel mix</li>
+          </ul>
+        </div>
+
+        <Panel class="contact-form hero-2col__panel">
+          <form class="contact-form__body" action="#" method="post">
+            <div class="contact-form__grid contact-form__grid--two">
+              <label class="contact-field">
+                <span class="contact-field__label">Full name</span>
+                <input name="fullName" type="text" placeholder="Jane Doe" autocomplete="name" />
+              </label>
+              <label class="contact-field">
+                <span class="contact-field__label">Work email</span>
+                <input
+                  name="workEmail"
+                  type="email"
+                  placeholder="jane@company.com"
+                  autocomplete="email"
+                />
+              </label>
+            </div>
+
+            <div class="contact-form__grid">
+              <label class="contact-field">
+                <span class="contact-field__label">Company</span>
+                <input
+                  name="company"
+                  type="text"
+                  placeholder="Company, Inc."
+                  autocomplete="organization"
+                />
+              </label>
+            </div>
+
+            <div class="contact-form__grid">
+              <label class="contact-field">
+                <span class="contact-field__label">Use case</span>
+                <span class="contact-field__select-wrap">
+                  <select name="useCase">
+                    <option value="">Select a use case…</option>
+                    <option value="support">Support</option>
+                    <option value="sales">Sales</option>
+                    <option value="recovery">Recovery</option>
+                    <option value="recruitment">Recruitment</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <span class="contact-field__chevron" aria-hidden="true"></span>
+                </span>
+              </label>
+            </div>
+
+            <fieldset class="contact-channels">
+              <legend class="contact-field__label">Channels of interest</legend>
+              <div class="contact-channels__row">
+                <button type="button" class="contact-pill" aria-pressed="false" data-channel-pill>
+                  <span class="channel-dot channel-dot--voice" aria-hidden="true"></span>
+                  <span>Voice</span>
+                </button>
+                <button type="button" class="contact-pill" aria-pressed="false" data-channel-pill>
+                  <span class="channel-dot channel-dot--whatsapp" aria-hidden="true"></span>
+                  <span>WhatsApp</span>
+                </button>
+                <button type="button" class="contact-pill" aria-pressed="false" data-channel-pill>
+                  <span class="channel-dot channel-dot--email" aria-hidden="true"></span>
+                  <span>Email</span>
+                </button>
+                <button type="button" class="contact-pill" aria-pressed="false" data-channel-pill>
+                  <span class="channel-dot channel-dot--sms" aria-hidden="true"></span>
+                  <span>SMS</span>
+                </button>
+              </div>
+            </fieldset>
+
+            <Button variant="solid" class="contact-form__submit" type="submit">Book a demo</Button>
+          </form>
+        </Panel>
+      </div>
+    </section>
+
+    <section class="contact-try">
+      <div class="container contact-try__inner">
+        <div class="contact-try__eyebrow">No form required</div>
+        <h2 class="display-lg contact-try__title">Prefer to just try it first?</h2>
+
+        <Panel class="contact-audio">
+          <div class="contact-audio__row">
+            <button type="button" class="contact-audio__play" aria-label="Play audio preview">
+              ▶
+            </button>
+            <div class="contact-audio__progress" aria-hidden="true">
+              <span class="contact-audio__progress-fill"></span>
+            </div>
+            <span class="contact-audio__time">0:42</span>
+          </div>
+        </Panel>
+
+        <div class="contact-try__demo">
+          <HeroDemo client:visible initial="voice" />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>
+
+<script>
+  function initChannelPills() {
+    document.querySelectorAll<HTMLElement>("[data-channel-pill]").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const pressed = pill.getAttribute("aria-pressed") === "true";
+        pill.setAttribute("aria-pressed", pressed ? "false" : "true");
+      });
+    });
+  }
+
+  initChannelPills();
+</script>
+
+<style>
+  .contact-page {
+    background: var(--bg);
+  }
+
+  .contact-hero {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .contact-hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 45%, transparent 100%);
+  }
+
+  .contact-hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .contact-hero__inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact-hero__eyebrow-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    margin-bottom: var(--sp-5);
+  }
+
+  .contact-hero__eyebrow {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .contact-hero__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .contact-hero__title {
+    margin: 0 0 var(--sp-4);
+    text-wrap: balance;
+  }
+
+  .contact-hero__sub {
+    margin: 0 0 var(--sp-5);
+    color: var(--text-dim);
+    max-width: 52ch;
+  }
+
+  .contact-hero__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .contact-hero__list li {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .contact-hero__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 10px;
+    height: 1px;
+    background: var(--text-faint);
+  }
+
+  .contact-form {
+    border-radius: 2px;
+  }
+
+  .contact-form__body {
+    display: grid;
+    gap: var(--sp-4);
+    color-scheme: dark;
+  }
+
+  .contact-form__grid {
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .contact-form__grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-form__grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .contact-field {
+    display: grid;
+    gap: 8px;
+  }
+
+  .contact-field__label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .contact-field input,
+  .contact-field select {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: var(--bg);
+    color: var(--text);
+    padding: 10px 12px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    box-shadow: none;
+    outline: none;
+  }
+
+  .contact-field input::placeholder {
+    color: var(--text-faint);
+  }
+
+  .contact-field__select-wrap {
+    position: relative;
+    display: block;
+  }
+
+  .contact-field select {
+    appearance: none;
+    padding-right: 34px;
+    color-scheme: dark;
+  }
+
+  .contact-field__chevron {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid var(--text-dim);
+    border-bottom: 1px solid var(--text-dim);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .contact-field input:focus-visible,
+  .contact-field select:focus-visible,
+  .contact-pill:focus-visible,
+  .contact-form__submit:focus-visible {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 1px var(--blue);
+  }
+
+  .contact-channels {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .contact-channels__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .contact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-dim);
+    min-height: var(--tap-min);
+    padding: 0 14px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    line-height: 1;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+
+  .contact-pill :global(.channel-dot) {
+    width: 6px;
+    height: 6px;
+  }
+
+  .contact-pill[aria-pressed="true"] {
+    border-color: var(--blue);
+    color: var(--text);
+  }
+
+  .contact-form__submit {
+    width: 100%;
+    border-radius: 2px !important;
+  }
+
+  .contact-try {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .contact-try__inner {
+    display: grid;
+    gap: var(--sp-4);
+  }
+
+  .contact-try__eyebrow {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .contact-try__title {
+    margin: 0;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .contact-audio {
+    border-radius: 2px;
+  }
+
+  .contact-audio__row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .contact-audio__play {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--blue);
+    border-radius: 2px;
+    background: var(--blue);
+    color: var(--bg);
+    box-shadow: 0 0 22px var(--blue-dim);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    padding-left: 1px;
+  }
+
+  .contact-audio__progress {
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .contact-audio__progress-fill {
+    display: block;
+    height: 100%;
+    width: 42%;
+    background: var(--blue);
+  }
+
+  .contact-audio__time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .contact-try__demo :global(.hero-demo) {
+    border-radius: 2px;
+  }
+
+  @media (max-width: 400px) {
+    .contact-audio__row {
+      gap: 10px;
+    }
+  }
+</style>

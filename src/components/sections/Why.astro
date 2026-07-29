@@ -47,7 +47,7 @@ import { COMPARISON_ROWS } from "../../data/home";
   .why {
     background: var(--bg);
     border-bottom: 1px solid var(--line);
-    padding-block: var(--sp-8);
+    padding-block: var(--section-pad);
   }
 
   .why__intro {
@@ -64,16 +64,23 @@ import { COMPARISON_ROWS } from "../../data/home";
   }
 
   .why__table-wrap {
+    display: none;
     overflow-x: auto;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--bg-elev);
   }
 
+  @media (min-width: 768px) {
+    .why__table-wrap {
+      display: block;
+    }
+  }
+
   .why__table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 640px;
+    min-width: var(--bp-sm);
   }
 
   .why__table th,

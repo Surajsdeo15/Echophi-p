@@ -429,10 +429,14 @@ function reserveHeight(root: HTMLElement) {
 
 export default function HeroDemo({
   initial = "voice",
+  channel,
 }: {
   initial?: ChannelKey;
+  /** When set, lock to this channel and hide the tab switcher (channel pages). */
+  channel?: ChannelKey;
 }) {
-  const [active, setActive] = useState<ChannelKey>(initial);
+  const locked = channel != null;
+  const [active, setActive] = useState<ChannelKey>(channel ?? initial);
   const rootRef = useRef<HTMLDivElement>(null);
   const stopRef = useRef<(() => void) | null>(null);
   const enteredRef = useRef(false);
@@ -555,27 +559,29 @@ export default function HeroDemo({
 
   return (
     <div class="hero-demo" id="try-it-live" ref={rootRef}>
-      <div class="hero-demo__tabs" role="tablist" aria-label="Channel demos">
-        {CHANNEL_ORDER.map((key) => {
-          const on = key === active;
-          return (
-            <button
-              type="button"
-              class={`hero-demo__tab${on ? " is-active" : ""}`}
-              role="tab"
-              aria-selected={on}
-              onClick={() => setActive(key)}
-            >
-              <span
-                class={`channel-dot channel-dot--${key}`}
-                style={{ opacity: on ? 1 : 0.35 }}
-                aria-hidden="true"
-              />
-              <span>{CHANNELS[key].label}</span>
-            </button>
-          );
-        })}
-      </div>
+      {!locked && (
+        <div class="hero-demo__tabs" role="tablist" aria-label="Channel demos">
+          {CHANNEL_ORDER.map((key) => {
+            const on = key === active;
+            return (
+              <button
+                type="button"
+                class={`hero-demo__tab${on ? " is-active" : ""}`}
+                role="tab"
+                aria-selected={on}
+                onClick={() => setActive(key)}
+              >
+                <span
+                  class={`channel-dot channel-dot--${key}`}
+                  style={{ opacity: on ? 1 : 0.35 }}
+                  aria-hidden="true"
+                />
+                <span>{CHANNELS[key].label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div class="hero-demo__body">
         <div class="hero-demo__label hd-reveal" data-hd-label>

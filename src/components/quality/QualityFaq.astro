@@ -1,0 +1,29 @@
+---
+import FaqAccordion from "../../islands/FaqAccordion";
+import { QUALITY_FAQS } from "../../data/quality";
+---
+
+<section class="q-faq">
+  <div class="container">
+    <div class="mono-label q-faq__eyebrow">FAQ</div>
+    <h2 class="display-lg q-faq__title">AI conversation quality, answered</h2>
+    <FaqAccordion client:visible items={[...QUALITY_FAQS]} showMarker />
+  </div>
+</section>
+
+<style>
+  .q-faq {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-faq__eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .q-faq__title {
+    margin: 0 0 var(--sp-5);
+  }
+</style>

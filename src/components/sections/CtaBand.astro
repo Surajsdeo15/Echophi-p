@@ -1,15 +1,34 @@
 ---
 import Button from "../ui/Button.astro";
 import { CTA_BAND } from "../../data/home";
+
+interface Props {
+  title?: string;
+  /** Pass null to omit the supporting line */
+  sub?: string | null;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  title = CTA_BAND.title,
+  sub = CTA_BAND.sub,
+  primaryLabel = CTA_BAND.primaryLabel,
+  primaryHref = "/#cta",
+  secondaryLabel = CTA_BAND.secondaryLabel,
+  secondaryHref = CTA_BAND.secondaryHref,
+} = Astro.props;
 ---
 
 <section class="cta-band" id="cta">
   <div class="container cta-band__inner">
-    <h2 class="display-lg">{CTA_BAND.title}</h2>
-    <p class="body-copy">{CTA_BAND.sub}</p>
+    <h2 class="display-lg">{title}</h2>
+    {sub ? <p class="body-copy">{sub}</p> : null}
     <div class="cta-band__actions">
-      <Button variant="solid" href="#cta">{CTA_BAND.primaryLabel}</Button>
-      <Button variant="ghost" href={CTA_BAND.secondaryHref}>{CTA_BAND.secondaryLabel}</Button>
+      <Button variant="solid" href={primaryHref}>{primaryLabel}</Button>
+      <Button variant="ghost" href={secondaryHref}>{secondaryLabel}</Button>
     </div>
   </div>
 </section>
@@ -22,7 +41,7 @@ import { CTA_BAND } from "../../data/home";
 
   .cta-band__inner {
     text-align: center;
-    padding-block: var(--sp-8);
+    padding-block: var(--section-pad);
   }
 
   .cta-band__inner .display-lg {

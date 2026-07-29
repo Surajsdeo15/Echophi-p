@@ -1,0 +1,126 @@
+---
+interface Step {
+  numLabel: string;
+  title: string;
+  desc: string;
+  verified?: boolean;
+}
+
+interface Props {
+  steps: readonly Step[];
+  /** Horizontal rails between steps (home). Stacked grid omits rails. */
+  withRails?: boolean;
+  class?: string;
+}
+
+const { steps, withRails = true, class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "lifecycle-steps",
+    !withRails && "lifecycle-steps--stack",
+    withRails && "lifecycle-steps--tilt",
+    className,
+  ]}
+  data-lifecycle-reveal={withRails ? "" : undefined}
+>
+  {
+    steps.map((s, i) => (
+      <>
+        <div
+          class:list={["lifecycle-step", s.verified && "is-verified"]}
+          data-tilt-card={withRails ? "" : undefined}
+          data-lifecycle-card={withRails ? "" : undefined}
+          style={withRails ? `--card-i:${i}` : undefined}
+        >
+          <div class="lifecycle-step__face" data-tilt-face>
+            <div class="lifecycle-step__tile">{s.numLabel}</div>
+            <div class="lifecycle-step__num">{s.numLabel}</div>
+            <h3 class="lifecycle-step__title">{s.title}</h3>
+            <p class="lifecycle-step__desc">{s.desc}</p>
+          </div>
+        </div>
+        {withRails && i < steps.length - 1 && (
+          <div class="lifecycle-step__rail" aria-hidden="true" />
+        )}
+      </>
+    ))
+  }
+</div>
+
+{
+  withRails && (
+    <script>
+      function initLifecycleReveal() {
+        document
+          .querySelectorAll<HTMLElement>("[data-lifecycle-reveal]")
+          .forEach((root) => {
+            if (root.dataset.revealBound) return;
+            root.dataset.revealBound = "1";
+
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches;
+            if (reduce) {
+              root.classList.add("is-ready");
+              return;
+            }
+
+            const io = new IntersectionObserver(
+              (entries) => {
+                if (!entries[0]?.isIntersecting) return;
+                root.classList.add("is-ready");
+                io.disconnect();
+              },
+              { threshold: 0.2 },
+            );
+            io.observe(root);
+          });
+      }
+
+      function initLifecycleTilt() {
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)")
+          .matches;
+        if (reduce) return;
+
+        const max = 22;
+
+        document
+          .querySelectorAll<HTMLElement>(".lifecycle-steps--tilt [data-tilt-card]")
+          .forEach((card) => {
+            if (card.dataset.tiltBound) return;
+            card.dataset.tiltBound = "1";
+
+            const face = card.querySelector<HTMLElement>("[data-tilt-face]");
+            if (!face) return;
+
+            const onMove = (e: MouseEvent) => {
+              const r = card.getBoundingClientRect();
+              const px = ((e.clientX - r.left) / r.width) * 100;
+              const py = ((e.clientY - r.top) / r.height) * 100;
+              const nx = (px / 100) * 2 - 1;
+              const ny = (py / 100) * 2 - 1;
+              const rotY = nx * max;
+              const rotX = -ny * max;
+              face.style.setProperty("--spot-x", `${px}%`);
+              face.style.setProperty("--spot-y", `${py}%`);
+              face.style.transform = `translateZ(28px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
+            };
+
+            const onLeave = () => {
+              face.style.transform =
+                "translateZ(0) rotateX(0deg) rotateY(0deg) scale(1)";
+              face.style.removeProperty("--spot-x");
+              face.style.removeProperty("--spot-y");
+            };
+
+            card.addEventListener("mousemove", onMove);
+            card.addEventListener("mouseleave", onLeave);
+          });
+      }
+
+      initLifecycleReveal();
+      initLifecycleTilt();
+    </script>
+  )
+}

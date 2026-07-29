@@ -6,16 +6,18 @@ import { TICKER } from "../../data/home";
 <div class="ticker">
   <div class="ticker__inner container">
     <span class="ticker__live">Live quality</span>
-    <div class="ticker__items">
-      {
-        TICKER.map((t) => (
-          <span class="ticker__item">
-            <ChannelDot channel={t.key} />
-            <span class="ticker__label">{t.label}</span>
-            <span class="ticker__score">{t.score}</span>
-          </span>
-        ))
-      }
+    <div class="ticker__viewport">
+      <div class="ticker__track">
+        {
+          TICKER.map((t) => (
+            <span class="ticker__item">
+              <ChannelDot channel={t.key} />
+              <span class="ticker__label">{t.label}</span>
+              <span class="ticker__score">{t.score}</span>
+            </span>
+          ))
+        }
+      </div>
     </div>
   </div>
 </div>
@@ -45,12 +47,30 @@ import { TICKER } from "../../data/home";
     color: var(--text-faint);
   }
 
-  .ticker__items {
+  .ticker__live {
+    flex-shrink: 0;
+  }
+
+  .ticker__viewport {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    container-type: inline-size;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 24px,
+      black calc(100% - 24px),
+      transparent
+    );
+  }
+
+  .ticker__track {
     display: flex;
     align-items: center;
-    gap: var(--sp-4);
-    min-width: 0;
-    overflow-x: auto;
+    gap: var(--sp-5);
+    width: max-content;
+    animation: ticker-scroll 22s linear infinite;
   }
 
   .ticker__item {
@@ -58,11 +78,62 @@ import { TICKER } from "../../data/home";
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .ticker__score {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text);
+  }
+
+  @keyframes ticker-scroll {
+    from {
+      transform: translateX(100cqi);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Mobile / tablet: horizontal scroll, no lost stats */
+  @media (max-width: 1023px) {
+    .ticker__viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      mask-image: none;
+    }
+
+    .ticker__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ticker__track {
+      animation: none;
+      transform: none;
+      padding-right: var(--sp-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+      transform: none;
+    }
+
+    @media (min-width: 1024px) {
+      .ticker__viewport {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        mask-image: none;
+      }
+
+      .ticker__viewport::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 </style>

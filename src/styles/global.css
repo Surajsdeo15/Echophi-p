@@ -7,6 +7,16 @@
 @import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/jetbrains-mono/600.css";
 @import "./tokens.css";
+@import "./breakpoints.css";
+@import "./card-grid.css";
+@import "./lifecycle.css";
+
+@theme {
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+}
 
 *,
 *::before,
@@ -20,6 +30,7 @@ html {
   font-family: var(--font-display);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 
 html.theme-switching,
@@ -34,6 +45,24 @@ body {
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
+  overflow-x: clip;
+  /* Keep floating CTA from covering footer links on small screens */
+  padding-bottom: calc(var(--tap-min) + var(--sp-6));
+}
+
+@media (min-width: 640px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -71,7 +100,7 @@ img {
 
 .display-xl {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-size: clamp(2rem, 6vw, 3.75rem);
   font-weight: 600;
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -81,7 +110,7 @@ img {
 
 .display-lg {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+  font-size: clamp(1.5rem, 4.2vw, 2.25rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -91,7 +120,7 @@ img {
 
 .display-md {
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   font-weight: 500;
   line-height: 1.05;
   letter-spacing: -0.02em;
@@ -111,13 +140,16 @@ img {
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding-inline: var(--sp-5);
+  padding-inline: var(--gutter);
 }
 
-@media (min-width: 900px) {
-  .container {
-    padding-inline: var(--sp-8);
-  }
+/* Shared section vertical padding — prefer var(--section-pad) in components */
+.section-pad {
+  padding-block: var(--section-pad);
+}
+
+.section-pad-hero {
+  padding-block: var(--section-pad-hero);
 }
 
 @media (prefers-reduced-motion: reduce) {

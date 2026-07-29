@@ -1,6 +1,16 @@
 :root {
   --radius: 2px;
-  --maxw: 1280px;
+
+  /* Canonical breakpoints — sm 640, md 768, lg 1024, xl 1280 */
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+
+  --maxw: var(--bp-xl);
+
+  /* Horizontal page gutter: 16px mobile, 24px from md up */
+  --gutter: var(--sp-4);
 
   --sp-1: 4px;
   --sp-2: 8px;
@@ -13,11 +23,32 @@
   --sp-9: 96px;
   --sp-10: 128px;
 
+  /* Touch target minimum (WCAG) */
+  --tap-min: 44px;
+
+  /* Vertical section rhythm: 48px mobile → 64px tablet → 96px hero desktop */
+  --section-pad: var(--sp-7);
+  --section-pad-hero: var(--sp-7);
+
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --ok: #2dd4a7;
   --flag: #ef6b6b;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--sp-5);
+    --section-pad: var(--sp-8);
+    --section-pad-hero: var(--sp-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --section-pad-hero: var(--sp-9);
+  }
 }
 
 [data-theme="dark"] {

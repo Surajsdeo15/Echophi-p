@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import QualityHero from "../components/quality/QualityHero.astro";
+import QualityProblem from "../components/quality/QualityProblem.astro";
+import QualityLifecycle from "../components/quality/QualityLifecycle.astro";
+import QualityChecks from "../components/quality/QualityChecks.astro";
+import QualityHuman from "../components/quality/QualityHuman.astro";
+import QualityDashboard from "../components/quality/QualityDashboard.astro";
+import QualityFaq from "../components/quality/QualityFaq.astro";
+---
+
+<Layout title="Echophi — The Quality Layer">
+  <Ticker />
+  <Nav />
+  <main>
+    <QualityHero />
+    <QualityProblem />
+    <QualityLifecycle />
+    <QualityChecks />
+    <QualityHuman />
+    <QualityDashboard />
+    <QualityFaq />
+    <CtaBand />
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>

@@ -1,7 +1,8 @@
 ---
 import ChannelDot from "../ui/ChannelDot.astro";
 import SectionMarker from "../ui/SectionMarker.astro";
-import { USE_CASES, CHANNELS } from "../../data/home";
+import { USE_CASES } from "../../data/use-cases";
+import { CHANNELS } from "../../data/home";
 ---
 
 <section class="usecases" id="use-cases">
@@ -11,12 +12,12 @@ import { USE_CASES, CHANNELS } from "../../data/home";
       <h2 class="display-lg">Built for the conversations that move your business</h2>
     </div>
 
-    <div class="usecases__grid">
+    <div class="usecases__grid bordered-grid bordered-grid--3">
       {
         USE_CASES.map((u) => (
           <div class="usecases__cell">
             <h3 class="usecases__title">{u.title}</h3>
-            <p class="usecases__desc">{u.desc}</p>
+            <p class="usecases__desc">{u.tagline}</p>
             <div class="usecases__chips">
               {u.channels.map((ch) => (
                 <span class="usecases__chip">
@@ -36,7 +37,7 @@ import { USE_CASES, CHANNELS } from "../../data/home";
   .usecases {
     background: var(--bg);
     border-bottom: 1px solid var(--line);
-    padding-block: var(--sp-8);
+    padding-block: var(--section-pad);
   }
 
   .usecases__intro {
@@ -48,29 +49,8 @@ import { USE_CASES, CHANNELS } from "../../data/home";
     max-width: 20ch;
   }
 
-  .usecases__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-  }
-
-  @media (min-width: 768px) {
-    .usecases__grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1100px) {
-    .usecases__grid {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-  }
-
   .usecases__cell {
     padding: var(--sp-5);
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
   }
 
   .usecases__title {

@@ -34,17 +34,12 @@ export const TICKER = CHANNEL_ORDER.map((key) => ({
 }));
 
 export const NAV_PRIMARY = [
-  { label: "Quality", href: "#quality" },
-  { label: "Use Cases", href: "#use-cases" },
-  { label: "Pricing", href: "#cta" },
-  { label: "Contact", href: "#cta" },
+  { label: "Channels", href: "/#channels" },
+  { label: "Quality", href: "/quality" },
+  { label: "Use cases", href: "/use-cases" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Contact", href: "/contact" },
 ] as const;
-
-export const NAV_CHANNELS = CHANNEL_ORDER.map((key) => ({
-  key,
-  label: CHANNELS[key].label,
-  href: `#channels`,
-}));
 
 export const DEMO = {
   voice: {
@@ -257,38 +252,8 @@ export const LIFECYCLE = [
   },
 ];
 
-export const USE_CASES = [
-  {
-    title: "Customer Support",
-    desc: "Resolve more, escalate smarter",
-    channels: ["voice", "whatsapp", "email", "sms"] as ChannelKey[],
-  },
-  {
-    title: "Sales & Marketing Outreach",
-    desc: "Conversations that convert",
-    channels: ["voice", "whatsapp", "sms"] as ChannelKey[],
-  },
-  {
-    title: "Payment & Order Recovery",
-    desc: "Recover revenue, respectfully",
-    channels: ["sms", "whatsapp", "voice"] as ChannelKey[],
-  },
-  {
-    title: "Recruitment Screening",
-    desc: "Screen every applicant, fairly",
-    channels: ["voice", "email"] as ChannelKey[],
-  },
-  {
-    title: "Appointment Reminders",
-    desc: "Cut no-shows, keep calendars full",
-    channels: ["sms", "whatsapp", "voice"] as ChannelKey[],
-  },
-  {
-    title: "Lead Qualification",
-    desc: "Respond in seconds, route the best",
-    channels: ["voice", "whatsapp", "sms"] as ChannelKey[],
-  },
-];
+/** @deprecated import from ./use-cases — re-exported so existing imports keep working */
+export { USE_CASES } from "./use-cases";
 
 export const PROOF_STATS = [
   { caption: "Avg. first response", value: "—", suffix: undefined },
@@ -379,16 +344,16 @@ export const CTA_BAND = {
 };
 
 export const FOOTER_PRODUCT = [
-  { label: "Voice", href: "#channels" },
-  { label: "WhatsApp", href: "#channels" },
-  { label: "Email", href: "#channels" },
-  { label: "SMS", href: "#channels" },
-  { label: "Quality layer", href: "#quality" },
-  { label: "Use Cases", href: "#use-cases" },
-  { label: "Pricing", href: "#cta" },
+  { label: "Voice", href: "/channels/voice" },
+  { label: "WhatsApp", href: "/channels/whatsapp" },
+  { label: "Email", href: "/channels/email" },
+  { label: "SMS", href: "/channels/sms" },
+  { label: "Quality layer", href: "/quality" },
+  { label: "Use Cases", href: "/use-cases" },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 export const FOOTER_COMPANY = [
-  { label: "Home", href: "#" },
-  { label: "About", href: "#cta" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
 ];

@@ -1,0 +1,114 @@
+---
+import QualityChecksTabs from "../../islands/QualityChecksTabs";
+import { QUALITY_CHECKS } from "../../data/quality";
+---
+
+<section class="q-checked">
+  <div class="container">
+    <div class="mono-label q-checked__eyebrow">{QUALITY_CHECKS.eyebrow}</div>
+    <h2 class="display-lg q-checked__title">{QUALITY_CHECKS.title}</h2>
+    <QualityChecksTabs client:visible checks={QUALITY_CHECKS.byChannel} />
+  </div>
+</section>
+
+<style>
+  .q-checked {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-checked__eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .q-checked__title {
+    margin: 0 0 var(--sp-6);
+  }
+
+  .q-checked :global(.q-checks) {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-elev);
+  }
+
+  .q-checked :global(.q-checks__tabs) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .q-checked :global(.q-checks__tab) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--tap-min);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid transparent;
+    margin-bottom: -1px;
+    background: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .q-checked :global(.q-checks__tab.is-active) {
+    color: var(--text);
+    border-bottom-color: var(--blue);
+  }
+
+  .q-checked :global(.q-checks__grid) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .q-checked :global(.q-checks__grid) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .q-checked :global(.q-checks__card) {
+    display: flex;
+    gap: 10px;
+    padding: 16px 18px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .q-checked :global(.q-checks__mark) {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+  }
+
+  .q-checked :global(.q-checks__name) {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .q-checked :global(.q-checks__desc) {
+    margin: 3px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-dim);
+  }
+</style>

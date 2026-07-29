@@ -1,0 +1,34 @@
+---
+import LifecycleAccordion from "../../islands/LifecycleAccordion";
+import { QUALITY_LIFECYCLE } from "../../data/quality";
+---
+
+<section class="q-lifecycle">
+  <div class="container">
+    <div class="mono-label q-lifecycle__eyebrow">{QUALITY_LIFECYCLE.eyebrow}</div>
+    <h2 class="display-lg q-lifecycle__title">{QUALITY_LIFECYCLE.title}</h2>
+    <p class="body-copy q-lifecycle__sub">{QUALITY_LIFECYCLE.sub}</p>
+    <LifecycleAccordion client:visible steps={QUALITY_LIFECYCLE.steps} />
+  </div>
+</section>
+
+<style>
+  .q-lifecycle {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-lifecycle__eyebrow {
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .q-lifecycle__title {
+    margin: 0 0 var(--sp-2);
+  }
+
+  .q-lifecycle__sub {
+    margin: 0 0 var(--sp-6);
+  }
+</style>

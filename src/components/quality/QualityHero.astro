@@ -1,0 +1,410 @@
+---
+import GridBackdrop from "../ui/GridBackdrop.astro";
+import TickRail from "../ui/TickRail.astro";
+import Button from "../ui/Button.astro";
+import Panel from "../ui/Panel.astro";
+import {
+  QUALITY_HERO,
+  QUALITY_REPORT,
+  QUALITY_REPORT_ROWS,
+} from "../../data/quality";
+---
+
+<section class="q-hero" id="quality-hero">
+  <div class="q-hero__grid-wrap" aria-hidden="true">
+    <GridBackdrop />
+  </div>
+  <TickRail side="left" />
+  <div class="q-hero__inner container hero-2col hero-2col--wide-copy">
+    <div class="q-hero__copy">
+      <span class="q-hero__badge">
+        <span class="q-hero__badge-dot" aria-hidden="true"></span>
+        {QUALITY_HERO.eyebrow}
+      </span>
+      <h1 class="display-xl q-hero__h1">{QUALITY_HERO.title}</h1>
+      <p class="body-copy q-hero__sub">{QUALITY_HERO.sub}</p>
+      <div class="q-hero__ctas">
+        <Button variant="solid" href="#dashboard">{QUALITY_HERO.primaryCta}</Button>
+        <Button variant="ghost" href="#cta">{QUALITY_HERO.secondaryCta}</Button>
+      </div>
+    </div>
+
+    <div class="q-hero__panel hero-2col__panel" data-q-report>
+      <Panel class="q-report">
+        <div slot="header" class="q-report__header" data-q-report-part="header">
+          <span class="q-report__title">
+            <span class="q-report__dot" aria-hidden="true"></span>
+            {QUALITY_REPORT.header}
+          </span>
+          <span class="q-report__channel">{QUALITY_REPORT.channel}</span>
+        </div>
+
+        <div class="q-report__rows">
+          {
+            QUALITY_REPORT_ROWS.map((row, i) => (
+              <div
+                class="q-report__row"
+                data-report-row={row.id}
+                data-status={row.status}
+                data-q-report-part="row"
+                style={`--row-i:${i}`}
+              >
+                <span class="q-report__glyph" aria-hidden="true">
+                  {row.status === "PASS" ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 13l4 4L19 7"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M12 4l9 16H3L12 4z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  )}
+                </span>
+                <span class="q-report__label">{row.label}</span>
+                <span class="q-report__status">{row.status}</span>
+              </div>
+            ))
+          }
+        </div>
+
+        <div slot="footer" class="q-report__footer" data-q-report-part="footer">
+          <span class="q-report__chip">
+            <span class="q-report__chip-dot" aria-hidden="true"></span>
+            {QUALITY_REPORT.chip}
+          </span>
+        </div>
+      </Panel>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initQualityReport(panel: HTMLElement) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      panel.classList.add("is-ready");
+      return;
+    }
+
+    const play = () => {
+      panel.classList.add("is-ready");
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        play();
+        io.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(panel);
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-q-report]").forEach(initQualityReport);
+</script>
+
+<style>
+  .q-hero {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .q-hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .q-hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .q-hero__inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  .q-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 7px 12px;
+    margin-bottom: var(--sp-5);
+  }
+
+  .q-hero__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .q-hero__h1 {
+    margin: 0 0 var(--sp-5);
+    max-width: none;
+    text-wrap: wrap;
+  }
+
+  .q-hero__sub {
+    margin: 0 0 var(--sp-6);
+    max-width: 60ch;
+  }
+
+  .q-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .q-hero__panel {
+    min-width: 0;
+  }
+
+  .q-report__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding: 14px 18px;
+  }
+
+  .q-report__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .q-report__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  .q-report__channel {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .q-report :global(.panel__body) {
+    padding: 0;
+  }
+
+  .q-report__rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .q-report__row {
+    display: grid;
+    grid-template-columns: 18px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    min-height: 48px;
+  }
+
+  .q-report__row:last-child {
+    border-bottom: none;
+  }
+
+  .q-report__glyph {
+    display: inline-flex;
+    color: var(--blue);
+  }
+
+  .q-report__row[data-status="FLAGGED"] .q-report__glyph {
+    color: var(--text-dim);
+  }
+
+  .q-report__label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .q-report__status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 767px) {
+    .q-report__row {
+      grid-template-columns: 18px 1fr;
+      grid-template-rows: auto auto;
+    }
+
+    .q-report__status {
+      grid-column: 2;
+    }
+  }
+
+  .q-report__footer {
+    display: flex;
+    align-items: center;
+  }
+
+  .q-report__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 4px 11px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .q-report__chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ok);
+  }
+
+  /* —— Reveal choreography (height reserved; opacity/transform only) —— */
+  [data-q-report] .q-report__header,
+  [data-q-report] .q-report__row,
+  [data-q-report] .q-report__footer {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  [data-q-report].is-ready .q-report__header {
+    animation: q-report-in 420ms ease forwards;
+  }
+
+  [data-q-report].is-ready .q-report__row {
+    animation: q-report-in 420ms ease forwards;
+    animation-delay: calc(180ms + var(--row-i) * 140ms);
+  }
+
+  [data-q-report].is-ready .q-report__footer {
+    animation: q-report-in 420ms ease forwards;
+    animation-delay: calc(180ms + 4 * 140ms + 120ms);
+  }
+
+  [data-q-report].is-ready .q-report__row .q-report__status {
+    animation: q-report-status-in 320ms ease forwards;
+    animation-delay: calc(280ms + var(--row-i) * 140ms);
+  }
+
+  [data-q-report].is-ready .q-report__row[data-status="FLAGGED"] .q-report__status {
+    animation:
+      q-report-status-in 320ms ease forwards,
+      q-report-flag-pulse 1.6s ease-in-out 2;
+    animation-delay:
+      calc(280ms + var(--row-i) * 140ms),
+      calc(600ms + var(--row-i) * 140ms);
+  }
+
+  [data-q-report].is-ready .q-report__dot {
+    animation: q-report-dot-pulse 2.4s ease-in-out 1s infinite;
+  }
+
+  [data-q-report].is-ready .q-report__chip-dot {
+    animation: q-report-dot-pulse 2.4s ease-in-out 1.6s infinite;
+  }
+
+  @keyframes q-report-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes q-report-status-in {
+    from {
+      opacity: 0;
+      letter-spacing: 0.2em;
+    }
+    to {
+      opacity: 1;
+      letter-spacing: 0.12em;
+    }
+  }
+
+  @keyframes q-report-flag-pulse {
+    0%,
+    100% {
+      color: var(--text-faint);
+    }
+    50% {
+      color: var(--flag);
+    }
+  }
+
+  @keyframes q-report-dot-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-q-report] .q-report__header,
+    [data-q-report] .q-report__row,
+    [data-q-report] .q-report__footer,
+    [data-q-report] .q-report__status {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    [data-q-report] .q-report__dot,
+    [data-q-report] .q-report__chip-dot {
+      animation: none !important;
+    }
+  }
+</style>

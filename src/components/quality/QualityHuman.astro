@@ -1,0 +1,92 @@
+---
+import { QUALITY_HUMAN } from "../../data/quality";
+---
+
+<section class="q-human">
+  <div class="container">
+    <div class="mono-label q-human__eyebrow">{QUALITY_HUMAN.eyebrow}</div>
+    <h2 class="display-lg q-human__title">{QUALITY_HUMAN.title}</h2>
+    <p class="body-copy q-human__sub">{QUALITY_HUMAN.sub}</p>
+    <div class="q-human__grid">
+      {
+        QUALITY_HUMAN.cards.map((card) => (
+          <div class:list={["q-human__card", card.featured && "is-featured"]}>
+            <div class="q-human__card-title">{card.title}</div>
+            <div class="q-human__card-desc">{card.desc}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .q-human {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .q-human__eyebrow {
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .q-human__title {
+    margin: 0 0 var(--sp-4);
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+
+  .q-human__sub {
+    margin: 0 0 var(--sp-6);
+    max-width: 66ch;
+  }
+
+  .q-human__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid var(--line);
+  }
+
+  @media (min-width: 768px) {
+    .q-human__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .q-human__card {
+    padding: 18px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .q-human__card.is-featured {
+    border: 1px solid var(--blue);
+    position: relative;
+    z-index: 1;
+  }
+
+  .q-human__card-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13.5px;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .q-human__card.is-featured .q-human__card-title {
+    color: var(--text);
+  }
+
+  .q-human__card-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .q-human__card.is-featured .q-human__card-desc {
+    color: var(--text);
+  }
+</style>

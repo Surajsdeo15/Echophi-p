@@ -2,11 +2,17 @@ import { useState } from "preact/hooks";
 
 type Faq = { q: string; a: string };
 
-export default function FaqAccordion({ items }: { items: Faq[] }) {
+export default function FaqAccordion({
+  items,
+  showMarker = false,
+}: {
+  items: Faq[];
+  showMarker?: boolean;
+}) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div class="faq-acc">
+    <div class={`faq-acc${showMarker ? " faq-acc--marked" : ""}`}>
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
@@ -17,7 +23,14 @@ export default function FaqAccordion({ items }: { items: Faq[] }) {
               aria-expanded={isOpen}
               onClick={() => setOpen(isOpen ? null : i)}
             >
-              <span>{item.q}</span>
+              <span class="faq-acc__q-text">
+                {showMarker && (
+                  <span class="faq-acc__marker" aria-hidden="true">
+                    Q.
+                  </span>
+                )}
+                {item.q}
+              </span>
               <span class="faq-acc__icon" aria-hidden="true">
                 {isOpen ? "−" : "+"}
               </span>

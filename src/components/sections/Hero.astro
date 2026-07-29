@@ -11,7 +11,7 @@ import { CONTACT } from "../../data/home";
     <GridBackdrop />
   </div>
   <TickRail side="left" />
-  <div class="hero__inner container">
+  <div class="hero__inner container hero-2col">
     <div class="hero__copy">
       <span class="hero__badge">
         <span class="hero__badge-dot" aria-hidden="true"></span>
@@ -30,7 +30,7 @@ import { CONTACT } from "../../data/home";
         <Button variant="ghost" href={CONTACT.telHref}>Talk to our AI now</Button>
       </div>
     </div>
-    <div class="hero__panel">
+    <div class="hero__panel hero-2col__panel">
       <HeroDemo client:visible />
     </div>
   </div>
@@ -58,18 +58,6 @@ import { CONTACT } from "../../data/home";
   .hero__inner {
     position: relative;
     z-index: 2;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--sp-7);
-    padding-block: var(--sp-8);
-  }
-
-  @media (min-width: 980px) {
-    .hero__inner {
-      grid-template-columns: 1.05fr 0.95fr;
-      align-items: center;
-      padding-block: var(--sp-9);
-    }
   }
 
   .hero__badge {

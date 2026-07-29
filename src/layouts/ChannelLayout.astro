@@ -1,0 +1,623 @@
+---
+import Layout from "./Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import GridBackdrop from "../components/ui/GridBackdrop.astro";
+import TickRail from "../components/ui/TickRail.astro";
+import Button from "../components/ui/Button.astro";
+import FaqAccordion from "../islands/FaqAccordion";
+import HeroDemo from "../islands/HeroDemo";
+import type { ChannelPage } from "../data/channels";
+import { CONTACT } from "../data/home";
+
+interface Props {
+  channel: ChannelPage;
+}
+
+const { channel: ch } = Astro.props;
+const ctaSecondaryHref =
+  ch.key === "whatsapp" ? CONTACT.whatsappHref : CONTACT.telHref;
+---
+
+<Layout title={`Echophi — ${ch.label} Channel`}>
+  <Ticker />
+  <Nav />
+  <main class="ch-page">
+
+    <!-- ── HERO ── -->
+    <section class="ch-hero" data-ch-hero>
+      <div class="ch-hero__grid-wrap" aria-hidden="true"><GridBackdrop /></div>
+      <TickRail side="left" />
+      <div class="container ch-hero__inner hero-2col hero-2col--channel">
+        <div class="ch-hero__copy">
+          <div
+            class="ch-badge"
+            style={`--ch-dot:var(${ch.dotVar});--in-i:0`}
+            data-ch-in
+          >
+            <span class="ch-badge__dot" aria-hidden="true"></span>
+            {ch.label} Channel
+          </div>
+          <h1 class="display-xl ch-hero__h1" data-ch-in style="--in-i:1">{ch.title}</h1>
+          <p class="body-copy ch-hero__sub" data-ch-in style="--in-i:2">{ch.sub}</p>
+          <div class="ch-hero__aside" data-ch-in style="--in-i:3">{ch.aside}</div>
+          <div class="ch-hero__ctas" data-ch-in style="--in-i:4">
+            <Button variant="solid" href="/#cta">{ch.primaryCta}</Button>
+            <Button variant="ghost" href={ch.secondaryHref}>{ch.secondaryCta}</Button>
+          </div>
+        </div>
+        <div class="ch-hero__panel hero-2col__panel" data-ch-in style="--in-i:5">
+          <HeroDemo client:visible channel={ch.key} />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="ch-hiw" data-ch-reveal>
+      <div class="container">
+        <div class="ch-eyebrow-row" data-ch-head>
+          <span class="ch-eyebrow">How it works</span>
+          <span class="ch-eyebrow-rule" aria-hidden="true"></span>
+        </div>
+        <h2 class="display-lg ch-section-title" data-ch-head>{ch.howTitle}</h2>
+        <div class="ch-hiw__grid bordered-grid bordered-grid--4">
+          {ch.howItWorks.map((step, i) => (
+            <div
+              class="ch-hiw__card"
+              data-ch-card
+              data-tilt-card
+              style={`--card-i:${i}`}
+            >
+              <div class="ch-card-face" data-tilt-face>
+                <div class="lifecycle-step__tile ch-tile">{step.numLabel}</div>
+                <h3 class="ch-hiw__title">{step.title}</h3>
+                <p class="ch-hiw__desc">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WHAT WE CHECK ── -->
+    <section class="ch-checks" data-ch-reveal>
+      <div class="container">
+        <div class="ch-eyebrow-row" data-ch-head>
+          <span class="ch-eyebrow">Quality & feedback · {ch.label}</span>
+          <span class="ch-eyebrow-rule" aria-hidden="true"></span>
+        </div>
+        <h2 class="display-lg ch-section-title" data-ch-head>{ch.checksTitle}</h2>
+        <div class="ch-checks__grid bordered-grid bordered-grid--4">
+          {ch.checks.map((item, i) => (
+            <div class="ch-checks__card" data-ch-card style={`--card-i:${i}`}>
+              <h3 class="ch-checks__title">
+                <span class="ch-checks__mark" aria-hidden="true"></span>
+                {item.title}
+              </h3>
+              <p class="ch-checks__desc">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── USE CASES ── -->
+    <section class="ch-uc" data-ch-reveal>
+      <div class="container">
+        <div class="ch-eyebrow-row" data-ch-head>
+          <span class="ch-eyebrow">Use cases</span>
+          <span class="ch-eyebrow-rule" aria-hidden="true"></span>
+        </div>
+        <h2 class="display-lg ch-section-title" data-ch-head>{ch.useTitle}</h2>
+        <div class="ch-uc__grid bordered-grid bordered-grid--3">
+          {ch.useCases.map((uc, i) => (
+            <div class="ch-uc__card" data-ch-card style={`--card-i:${i}`}>
+              <h3 class="ch-uc__title">{uc.title}</h3>
+              <p class="ch-uc__desc">{uc.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUALITY CALLOUT ── -->
+    <section class="ch-callout" data-ch-reveal>
+      <div class="container">
+        <div class="ch-callout__inner" data-ch-head>
+          <div class="ch-badge ch-badge--blue">
+            <span class="ch-badge__dot" aria-hidden="true"></span>
+            {ch.callout.badge}
+          </div>
+          <h2 class="display-lg ch-callout__title">{ch.callout.title}</h2>
+          <p class="body-copy ch-callout__body">{ch.callout.body}</p>
+          <Button variant="solid" href="/quality">{ch.callout.cta}</Button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="ch-faq" data-ch-reveal>
+      <div class="container">
+        <div class="ch-eyebrow-row" data-ch-head>
+          <span class="ch-eyebrow">FAQ</span>
+          <span class="ch-eyebrow-rule" aria-hidden="true"></span>
+        </div>
+        <h2 class="display-lg ch-section-title" data-ch-head>{ch.label} agents, answered</h2>
+        <div data-ch-head>
+          <FaqAccordion client:visible items={ch.faqs} showMarker />
+        </div>
+      </div>
+    </section>
+
+    <CtaBand
+      title={ch.ctaTitle}
+      sub="Book a demo, or try the widget above to see the quality layer score it live."
+      primaryLabel="Book a demo"
+      secondaryLabel={ch.key === "whatsapp" ? "Message us on WhatsApp" : "Talk to our AI now"}
+      secondaryHref={ctaSecondaryHref}
+    />
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>
+
+<script>
+  function revealOnView(el: HTMLElement) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      el.classList.add("is-ready");
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        el.classList.add("is-ready");
+        io.disconnect();
+      },
+      { threshold: 0.18 },
+    );
+    io.observe(el);
+  }
+
+  function initChannelTiltCards() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (reduce || !canHover) return;
+
+    const max = 22;
+
+    document.querySelectorAll<HTMLElement>(".ch-page [data-tilt-card]").forEach((card) => {
+      if (card.dataset.tiltBound) return;
+      card.dataset.tiltBound = "1";
+
+      const face = card.querySelector<HTMLElement>("[data-tilt-face]");
+      if (!face) return;
+
+      const onMove = (e: MouseEvent) => {
+        const r = card.getBoundingClientRect();
+        const px = ((e.clientX - r.left) / r.width) * 100;
+        const py = ((e.clientY - r.top) / r.height) * 100;
+        const nx = (px / 100) * 2 - 1;
+        const ny = (py / 100) * 2 - 1;
+        const rotY = nx * max;
+        const rotX = -ny * max;
+        face.style.setProperty("--spot-x", `${px}%`);
+        face.style.setProperty("--spot-y", `${py}%`);
+        face.style.transform = `translateZ(28px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
+      };
+
+      const onLeave = () => {
+        face.style.transform = "translateZ(0) rotateX(0deg) rotateY(0deg) scale(1)";
+        face.style.removeProperty("--spot-x");
+        face.style.removeProperty("--spot-y");
+      };
+
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-ch-hero]").forEach(revealOnView);
+  document.querySelectorAll<HTMLElement>("[data-ch-reveal]").forEach(revealOnView);
+  initChannelTiltCards();
+</script>
+
+<style>
+  .ch-page {
+    background: var(--bg);
+  }
+
+  /* ── HERO ── */
+  .ch-hero {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .ch-hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .ch-hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .ch-hero__inner {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Channel badge (eyebrow) */
+  .ch-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    padding: 7px 12px;
+    margin-bottom: var(--sp-5);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .ch-badge__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ch-dot, var(--blue));
+    flex-shrink: 0;
+    animation: ch-dot-pulse 1.8s ease-in-out infinite;
+  }
+
+  /* Blue dot variant for callout badge */
+  .ch-badge--blue {
+    --ch-dot: var(--blue);
+  }
+
+  .ch-hero__h1 {
+    margin: 0 0 var(--sp-5);
+    text-wrap: balance;
+  }
+
+  .ch-hero__sub {
+    margin: 0 0 var(--sp-4);
+    color: var(--text-dim);
+  }
+
+  .ch-hero__aside {
+    margin: 0 0 var(--sp-5);
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--text-faint);
+  }
+
+  .ch-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .ch-hero__panel {
+    min-width: 0;
+  }
+
+  /* Shared eyebrow row */
+  .ch-eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    margin-bottom: var(--sp-6);
+  }
+
+  .ch-eyebrow {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .ch-eyebrow-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .ch-section-title {
+    margin: 0 0 var(--sp-6);
+  }
+
+  /* ── HOW IT WORKS ── */
+  .ch-hiw {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .ch-hiw__grid {
+    perspective: 520px;
+    perspective-origin: 50% 40%;
+  }
+
+  .ch-hiw__card {
+    transform-style: preserve-3d;
+    z-index: 0;
+  }
+
+  .ch-hiw__card:hover {
+    z-index: 2;
+  }
+
+  /* Shared tile — matches home lifecycle tile */
+  .ch-tile {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: var(--sp-4);
+  }
+
+  .ch-hiw__title {
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .ch-hiw__desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+
+  /* ── WHAT WE CHECK ── */
+  .ch-checks {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .ch-checks__card {
+    padding: 22px 20px;
+  }
+
+  .ch-checks__title {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .ch-checks__mark {
+    flex-shrink: 0;
+    width: 8px;
+    height: 4px;
+    margin-top: 7px;
+    border-left: 1px solid var(--blue);
+    border-bottom: 1px solid var(--blue);
+    transform: rotate(-45deg);
+  }
+
+  .ch-checks__desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+
+  /* ── USE CASES ── */
+  .ch-uc {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .ch-uc__card {
+    padding: 22px 20px;
+  }
+
+  .ch-uc__title {
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .ch-uc__desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+
+  /* Shared Quality-problem tilt face */
+  .ch-card-face {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 22px 20px;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: translateZ(0) rotateX(0deg) rotateY(0deg) scale(1);
+    transition: transform 160ms ease-out, border-color 150ms ease,
+      background-color 150ms ease, box-shadow 160ms ease;
+    border: 1px solid transparent;
+    background: transparent;
+    will-change: transform;
+    transform-origin: center center;
+  }
+
+  .ch-card-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      160px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--blue-dim),
+      transparent 68%
+    );
+    transition: opacity 180ms ease;
+  }
+
+  [data-tilt-card]:hover .ch-card-face::before {
+    opacity: 1;
+  }
+
+  [data-tilt-card]:hover .ch-card-face {
+    background: var(--bg-elev);
+    border-color: var(--line-strong);
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.28),
+      0 0 0 1px var(--line);
+    transition: transform 50ms linear, border-color 150ms ease,
+      background-color 150ms ease, box-shadow 160ms ease;
+  }
+
+  .ch-card-face > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── QUALITY CALLOUT ── */
+  .ch-callout {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .ch-callout__inner {
+    max-width: 64ch;
+  }
+
+  .ch-callout__title {
+    margin: 0 0 var(--sp-4);
+  }
+
+  .ch-callout__body {
+    margin: 0 0 var(--sp-5);
+    color: var(--text-dim);
+  }
+
+  /* ── FAQ ── */
+  .ch-faq {
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .ch-faq .ch-section-title {
+    margin-bottom: var(--sp-5);
+  }
+
+  /* Square button corners (override shared radius) */
+  .ch-page :global(.btn) {
+    border-radius: 2px;
+  }
+
+  /* ── Animations ── */
+  [data-ch-in],
+  [data-ch-head],
+  [data-ch-card] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .ch-hero.is-ready [data-ch-in] {
+    animation: ch-in 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(var(--in-i, 0) * 90ms);
+  }
+
+  [data-ch-reveal].is-ready [data-ch-head] {
+    animation: ch-in 480ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  [data-ch-reveal].is-ready [data-ch-card] {
+    animation: ch-in 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(80ms + var(--card-i, 0) * 90ms);
+  }
+
+  @keyframes ch-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ch-dot-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.55;
+      transform: scale(0.85);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-ch-in],
+    [data-ch-head],
+    [data-ch-card] {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .ch-badge__dot {
+      animation: none;
+    }
+
+    .ch-card-face {
+      transition: none;
+      transform: none !important;
+    }
+  }
+
+  @media (hover: none) {
+    .ch-card-face {
+      transform: none !important;
+    }
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+import GridBackdrop from "../ui/GridBackdrop.astro";
+import TickRail from "../ui/TickRail.astro";
+import { USE_CASES_PAGE } from "../../data/use-cases";
+---
+
+<section class="uc-hero">
+  <div class="uc-hero__grid-wrap" aria-hidden="true">
+    <GridBackdrop />
+  </div>
+  <TickRail side="left" />
+  <div class="uc-hero__inner container">
+    <div class="uc-hero__eyebrow">
+      <span class="uc-hero__eyebrow-label">{USE_CASES_PAGE.hero.eyebrow}</span>
+      <span class="uc-hero__eyebrow-rule" aria-hidden="true"></span>
+    </div>
+    <h1 class="display-xl uc-hero__h1">{USE_CASES_PAGE.hero.title}</h1>
+    <p class="body-copy uc-hero__sub">{USE_CASES_PAGE.hero.sub}</p>
+  </div>
+</section>
+
+<style>
+  .uc-hero {
+    position: relative;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .uc-hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .uc-hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .uc-hero__inner {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--section-pad-hero);
+  }
+
+  .uc-hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    margin-bottom: var(--sp-5);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .uc-hero__eyebrow-label {
+    flex-shrink: 0;
+  }
+
+  .uc-hero__eyebrow-rule {
+    flex: 1;
+    height: 1px;
+    min-width: 24px;
+    background: var(--line-strong);
+  }
+
+  .uc-hero__h1 {
+    margin: 0 0 var(--sp-4);
+    max-width: 22ch;
+    text-wrap: balance;
+  }
+
+  .uc-hero__sub {
+    margin: 0;
+    max-width: 54ch;
+  }
+</style>

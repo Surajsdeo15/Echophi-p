@@ -25,6 +25,7 @@ const ORBIT = {
   data-signal
   style={`--orbit-rx-inner:${ORBIT.rxInner}px;--orbit-ry-inner:${ORBIT.ryInner}px;--orbit-rx-outer:${ORBIT.rxOuter}px;--orbit-ry-outer:${ORBIT.ryOuter}px;`}
 >
+  <div class="signal__spotlight" aria-hidden="true"></div>
   <!--
     BUG 3 root cause (prior): chips shared no common containing block, so each
     offset-path origin drifted. Labels clipped by overflow:hidden left only the
@@ -116,9 +117,33 @@ const ORBIT = {
     });
   }
 
+  function initSpotlight(section: HTMLElement) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (reduce || !canHover) return;
+
+    const onMove = (e: MouseEvent) => {
+      const r = section.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width) * 100;
+      const y = ((e.clientY - r.top) / r.height) * 100;
+      section.style.setProperty("--spot-x", `${x}%`);
+      section.style.setProperty("--spot-y", `${y}%`);
+      section.classList.add("is-spot-active");
+    };
+
+    const onLeave = () => {
+      section.classList.remove("is-spot-active");
+    };
+
+    section.addEventListener("mousemove", onMove);
+    section.addEventListener("mouseleave", onLeave);
+  }
+
   function initSignal(section: HTMLElement) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const mobileMq = window.matchMedia("(max-width: 767px)");
+
+    initSpotlight(section);
 
     const applyStatic = () => {
       const mobile = mobileMq.matches;
@@ -181,6 +206,8 @@ const ORBIT = {
   .signal {
     --orbit-inner-dur: 75s;
     --orbit-outer-dur: 95s;
+    --spot-x: 50%;
+    --spot-y: 50%;
 
     position: relative;
     background: var(--bg);
@@ -189,6 +216,25 @@ const ORBIT = {
     display: flex;
     align-items: center;
     overflow: hidden;
+  }
+
+  .signal__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 280ms ease;
+    background: radial-gradient(
+      280px circle at var(--spot-x) var(--spot-y),
+      var(--blue-dim),
+      transparent 70%
+    );
+  }
+
+  .signal.is-spot-active .signal__spotlight {
+    opacity: 1;
+    transition: opacity 120ms ease;
   }
 
   .orbit-field {
@@ -300,7 +346,7 @@ const ORBIT = {
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
-    padding-block: var(--sp-9);
+    padding-block: var(--section-pad-hero);
   }
 
   .signal__copy {
@@ -318,12 +364,22 @@ const ORBIT = {
 
   /* Reduced motion: freeze at even stations, no entrance/orbit */
   @media (prefers-reduced-motion: reduce) {
+    .signal__spotlight {
+      display: none;
+    }
+
     .signal__chip--inner,
     .signal__chip--outer {
       opacity: 1 !important;
       transform: none !important;
       animation: none !important;
       offset-distance: calc(var(--i) * 25%);
+    }
+  }
+
+  @media (hover: none) {
+    .signal__spotlight {
+      display: none;
     }
   }
 
@@ -339,7 +395,7 @@ const ORBIT = {
   @media (max-width: 767px) {
     .signal {
       min-height: 0;
-      overflow: visible;
+      overflow: hidden;
     }
 
     .orbit-field {

@@ -1,0 +1,702 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import Button from "../components/ui/Button.astro";
+import GridBackdrop from "../components/ui/GridBackdrop.astro";
+import TickRail from "../components/ui/TickRail.astro";
+
+const tiers = [
+  {
+    name: "Starter",
+    tagline: "For small teams launching their first quality loop.",
+    cta: "Start with Starter",
+    support: "Email support",
+    popular: false,
+    features: [
+      "Voice, WhatsApp, Email and SMS quality scoring",
+      "Core policy and compliance checks",
+      "Shared quality dashboards",
+      "Standard reviewer workflows",
+    ],
+    depthTitle: "Foundational review coverage",
+    depthBody: "Balanced automation and human spot checks for daily reliability.",
+  },
+  {
+    name: "Growth",
+    tagline: "For scaling teams that need tighter review depth.",
+    cta: "Choose Growth",
+    support: "Priority email & chat",
+    popular: true,
+    features: [
+      "Everything in Starter",
+      "Expanded scenario simulation",
+      "Higher reviewer sampling depth",
+      "Channel-level quality alerts",
+    ],
+    depthTitle: "Expanded review coverage",
+    depthBody: "More conversations are reviewed with deeper grading guidance.",
+  },
+  {
+    name: "Enterprise",
+    tagline: "For complex operations with strict controls and scale.",
+    cta: "Talk to sales",
+    support: "Dedicated success support",
+    popular: false,
+    features: [
+      "Everything in Growth",
+      "Custom workflows and governance",
+      "Advanced reporting exports",
+      "SLA and deployment controls",
+    ],
+    depthTitle: "Custom review coverage",
+    depthBody: "Reviewer workflows and escalation depth tuned to your operations.",
+  },
+] as const;
+---
+
+<Layout title="Echophi — Pricing">
+  <Ticker />
+  <Nav />
+  <main class="pricing-page">
+    <section class="pricing-hero" data-pricing-hero>
+      <div class="pricing-hero__grid-wrap" aria-hidden="true">
+        <GridBackdrop />
+      </div>
+      <TickRail side="left" />
+      <div class="container pricing-hero__inner">
+        <div class="pricing-hero__eyebrow-wrap" data-pricing-in style="--in-i:0">
+          <span class="pricing-hero__eyebrow">Plans</span>
+          <span class="pricing-hero__rule" aria-hidden="true"></span>
+        </div>
+        <h1 class="display-xl pricing-hero__title" data-pricing-in style="--in-i:1">
+          Pricing for every stage of quality maturity
+        </h1>
+        <p class="body-copy pricing-hero__sub" data-pricing-in style="--in-i:2">
+          Choose the tier that fits your team today. Placeholder pricing — figures to be
+          finalized.
+        </p>
+      </div>
+    </section>
+
+    <section class="pricing-grid" data-pricing-cards>
+      <div class="container">
+        <div class="pricing-grid__cards">
+          {
+            tiers.map((tier, i) => (
+              <article
+                class:list={["pricing-tier", tier.popular && "is-popular"]}
+                data-tilt-card
+                data-pricing-tier
+                style={`--tier-i:${i}`}
+              >
+                <div class="pricing-tier__face" data-tilt-face>
+                  {tier.popular && (
+                    <div class="pricing-tier__badge">
+                      <span class="pricing-tier__badge-dot" aria-hidden="true"></span>
+                      MOST POPULAR
+                    </div>
+                  )}
+                  <h2 class="pricing-tier__name">{tier.name}</h2>
+                  <p class="pricing-tier__tagline">{tier.tagline}</p>
+
+                  <div class="pricing-tier__price-row">
+                    <div class="pricing-tier__price-main">
+                      <span class="pricing-tier__currency">$</span>
+                      <span class="pricing-tier__value">$—</span>
+                    </div>
+                    <span class="pricing-tier__period">/mo, billed annually</span>
+                  </div>
+
+                  <div class="pricing-tier__custom">
+                    <span class="pricing-tier__custom-title">Let's talk</span>
+                    <span class="pricing-tier__custom-meta">custom volume pricing</span>
+                  </div>
+
+                  <Button variant={tier.popular ? "solid" : "ghost"} href="/#cta">
+                    {tier.cta}
+                  </Button>
+
+                  <div class="pricing-tier__depth">
+                    <span class="pricing-tier__depth-label">QUALITY REVIEW DEPTH</span>
+                    <h3 class="pricing-tier__depth-title">{tier.depthTitle}</h3>
+                    <p class="pricing-tier__depth-body">{tier.depthBody}</p>
+                  </div>
+
+                  <ul class="pricing-tier__features">
+                    {tier.features.map((feature) => <li>{feature}</li>)}
+                  </ul>
+
+                  <p class="pricing-tier__support">{tier.support}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+        <p class="pricing-grid__note" data-pricing-note>Placeholder pricing — figures to be finalized.</p>
+      </div>
+    </section>
+
+    <section class="pricing-cta" data-pricing-cta>
+      <div class="container pricing-cta__inner">
+        <h2 class="display-lg pricing-cta__title">Not sure which tier fits?</h2>
+        <p class="body-copy pricing-cta__sub">
+          We can help you match review depth and channel coverage to your current volume.
+        </p>
+        <Button variant="solid" href="/#cta">Book a demo</Button>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>
+
+<script>
+  function revealOnView(el: HTMLElement, className = "is-ready") {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      el.classList.add(className);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        el.classList.add(className);
+        io.disconnect();
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+  }
+
+  function initPricingTilt() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (reduce || !canHover) return;
+
+    const max = 14;
+
+    document.querySelectorAll<HTMLElement>("[data-pricing-tier][data-tilt-card]").forEach((card) => {
+      const face = card.querySelector<HTMLElement>("[data-tilt-face]");
+      if (!face) return;
+
+      const onMove = (e: MouseEvent) => {
+        const r = card.getBoundingClientRect();
+        const px = ((e.clientX - r.left) / r.width) * 100;
+        const py = ((e.clientY - r.top) / r.height) * 100;
+        const nx = (px / 100) * 2 - 1;
+        const ny = (py / 100) * 2 - 1;
+        const rotY = nx * max;
+        const rotX = -ny * max;
+        face.style.setProperty("--spot-x", `${px}%`);
+        face.style.setProperty("--spot-y", `${py}%`);
+        face.style.transform = `translateZ(20px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+      };
+
+      const onLeave = () => {
+        face.style.transform = "translateZ(0) rotateX(0deg) rotateY(0deg) scale(1)";
+        face.style.removeProperty("--spot-x");
+        face.style.removeProperty("--spot-y");
+      };
+
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-pricing-hero]").forEach((el) => revealOnView(el));
+  document.querySelectorAll<HTMLElement>("[data-pricing-cards]").forEach((el) => revealOnView(el));
+  document.querySelectorAll<HTMLElement>("[data-pricing-cta]").forEach((el) => revealOnView(el));
+  initPricingTilt();
+</script>
+
+<style>
+  .pricing-page {
+    position: relative;
+    z-index: 1;
+    background: var(--bg);
+  }
+
+  .pricing-hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .pricing-hero__grid-wrap {
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+
+  .pricing-hero__grid-wrap :global(.grid-backdrop) {
+    position: absolute;
+  }
+
+  .pricing-hero__inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    padding-block: var(--section-pad-hero);
+  }
+
+  .pricing-hero__eyebrow-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: min(920px, 100%);
+    margin-bottom: var(--sp-5);
+  }
+
+  .pricing-hero__eyebrow {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .pricing-hero__rule {
+    height: 1px;
+    background: var(--line-strong);
+    flex: 1;
+  }
+
+  .pricing-hero__title {
+    margin: 0 0 var(--sp-4);
+    max-width: 18ch;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .pricing-hero__sub {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--text-dim);
+  }
+
+  [data-pricing-in] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .pricing-hero.is-ready [data-pricing-in] {
+    animation: pricing-in 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(var(--in-i, 0) * 90ms);
+  }
+
+  .pricing-grid {
+    padding-block: var(--section-pad);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .pricing-grid__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+    align-items: stretch;
+    perspective: 900px;
+    perspective-origin: 50% 35%;
+  }
+
+  @media (min-width: 1024px) {
+    .pricing-grid__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .pricing-tier {
+    height: 100%;
+    transform-style: preserve-3d;
+    z-index: 0;
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  .pricing-grid.is-ready .pricing-tier {
+    animation: pricing-in 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(80ms + var(--tier-i, 0) * 110ms);
+  }
+
+  .pricing-tier:hover {
+    z-index: 2;
+  }
+
+  .pricing-tier.is-popular {
+    transform: none;
+  }
+
+  @media (min-width: 1024px) {
+    .pricing-tier.is-popular {
+      transform: translateY(-12px);
+    }
+  }
+
+  .pricing-grid.is-ready .pricing-tier.is-popular {
+    animation-name: pricing-in-popular;
+  }
+
+  .pricing-tier__face {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: var(--sp-5);
+    box-shadow: none;
+    transform-style: preserve-3d;
+    transform: translateZ(0) rotateX(0deg) rotateY(0deg) scale(1);
+    transform-origin: center center;
+    will-change: transform;
+    transition: transform 160ms ease-out, border-color 150ms ease, box-shadow 160ms ease;
+  }
+
+  .pricing-tier.is-popular .pricing-tier__face {
+    border-color: var(--blue);
+  }
+
+  .pricing-tier__face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      180px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      var(--blue-dim),
+      transparent 70%
+    );
+    transition: opacity 180ms ease;
+  }
+
+  .pricing-tier:hover .pricing-tier__face::before {
+    opacity: 1;
+  }
+
+  .pricing-tier:hover .pricing-tier__face {
+    transition: transform 50ms linear, border-color 150ms ease, box-shadow 160ms ease;
+  }
+
+  .pricing-tier__face > :global(*) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pricing-tier__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    align-self: flex-start;
+    margin-bottom: var(--sp-4);
+    padding: 5px 8px;
+    border: 1px solid var(--blue);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .pricing-tier__badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+    animation: pricing-badge-pulse 1.8s ease-in-out infinite;
+  }
+
+  .pricing-tier__name {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: 28px;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .pricing-tier__tagline {
+    margin: 0 0 var(--sp-4);
+    color: var(--text-dim);
+    min-height: 44px;
+  }
+
+  .pricing-tier__price-row {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+    margin-bottom: var(--sp-3);
+  }
+
+  .pricing-tier__price-main {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
+    color: var(--text);
+  }
+
+  .pricing-tier__currency {
+    font-family: var(--font-display);
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .pricing-tier__value {
+    font-family: var(--font-display);
+    font-size: 42px;
+    line-height: 0.95;
+    color: var(--text-dim);
+  }
+
+  .pricing-tier__period {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-bottom: 6px;
+  }
+
+  .pricing-tier__custom {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: var(--sp-4);
+  }
+
+  .pricing-tier__custom-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .pricing-tier__custom-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .pricing-tier :global(.btn) {
+    width: 100%;
+    border-radius: 2px;
+    margin-bottom: var(--sp-4);
+  }
+
+  .pricing-tier__depth {
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 12px;
+    background: var(--bg);
+    margin-bottom: var(--sp-4);
+  }
+
+  .pricing-tier__depth-label {
+    display: block;
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .pricing-tier__depth-title {
+    margin: 0 0 4px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .pricing-tier__depth-body {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-dim);
+  }
+
+  .pricing-tier__features {
+    list-style: none;
+    margin: 0;
+    padding: var(--sp-4) 0 0;
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 10px;
+  }
+
+  .pricing-tier__features li {
+    position: relative;
+    padding-left: 18px;
+    color: var(--text-dim);
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  .pricing-tier__features li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 8px;
+    height: 4px;
+    border-left: 1px solid var(--blue);
+    border-bottom: 1px solid var(--blue);
+    transform: rotate(-45deg);
+  }
+
+  .pricing-tier__support {
+    margin: auto 0 0;
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .pricing-grid__note {
+    margin: var(--sp-5) 0 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .pricing-grid.is-ready .pricing-grid__note {
+    animation: pricing-in 480ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 420ms;
+  }
+
+  .pricing-cta {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: var(--section-pad);
+  }
+
+  .pricing-cta__inner {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: var(--sp-3);
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .pricing-cta.is-ready .pricing-cta__inner {
+    animation: pricing-in 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .pricing-cta__title {
+    margin: 0;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+
+  .pricing-cta__sub {
+    margin: 0;
+    max-width: 56ch;
+    color: var(--text-dim);
+  }
+
+  .pricing-cta :global(.btn) {
+    border-radius: 2px;
+    margin-top: var(--sp-2);
+  }
+
+  @keyframes pricing-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pricing-in-popular {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes pricing-badge-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.55;
+      transform: scale(0.85);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .pricing-tier.is-popular,
+    .pricing-grid.is-ready .pricing-tier.is-popular {
+      transform: none;
+      animation-name: pricing-in;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-pricing-in],
+    .pricing-tier,
+    .pricing-grid__note,
+    .pricing-cta__inner {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .pricing-tier__face {
+      transform: none !important;
+      transition: none;
+    }
+
+    .pricing-tier__badge-dot {
+      animation: none;
+    }
+
+    @media (min-width: 1024px) {
+      .pricing-tier.is-popular {
+        transform: translateY(-12px) !important;
+      }
+    }
+  }
+
+  @media (hover: none) {
+    .pricing-tier__face {
+      transform: none !important;
+    }
+  }
+</style>

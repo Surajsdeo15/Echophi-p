@@ -13,6 +13,7 @@ const { side } = Astro.props;
     position: absolute;
     pointer-events: none;
     z-index: 1;
+    overflow: hidden;
   }
 
   .tick-rail--left {
@@ -20,6 +21,7 @@ const { side } = Astro.props;
     bottom: 0;
     left: 0;
     width: 16px;
+    max-width: 100%;
     background-image: repeating-linear-gradient(
       to bottom,
       var(--line-strong) 0,

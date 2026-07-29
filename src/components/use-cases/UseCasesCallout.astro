@@ -1,0 +1,81 @@
+---
+import Button from "../ui/Button.astro";
+import { USE_CASES_PAGE } from "../../data/use-cases";
+---
+
+<section class="uc-callout">
+  <div class="container uc-callout__inner">
+    <div class="uc-callout__copy">
+      <span class="uc-callout__badge">
+        <span class="uc-callout__badge-dot" aria-hidden="true"></span>
+        {USE_CASES_PAGE.callout.badge}
+      </span>
+      <h2 class="uc-callout__title">{USE_CASES_PAGE.callout.title}</h2>
+      <p class="uc-callout__body">{USE_CASES_PAGE.callout.body}</p>
+    </div>
+    <Button variant="solid" href="/quality">
+      {USE_CASES_PAGE.callout.link} <span aria-hidden="true">→</span>
+    </Button>
+  </div>
+</section>
+
+<style>
+  .uc-callout {
+    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .uc-callout__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-6);
+    padding-block: var(--sp-7);
+  }
+
+  .uc-callout__copy {
+    max-width: 56ch;
+  }
+
+  .uc-callout__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 5px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .uc-callout__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  .uc-callout__title {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .uc-callout__body {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+</style>

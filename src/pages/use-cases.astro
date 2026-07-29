@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import UseCasesHero from "../components/use-cases/UseCasesHero.astro";
+import UseCasesGrid from "../components/use-cases/UseCasesGrid.astro";
+import UseCasesCallout from "../components/use-cases/UseCasesCallout.astro";
+import { USE_CASES_PAGE } from "../data/use-cases";
+---
+
+<Layout title="Echophi — Use Cases">
+  <Ticker />
+  <Nav />
+  <main>
+    <UseCasesHero />
+    <UseCasesGrid />
+    <UseCasesCallout />
+    <CtaBand
+      title={USE_CASES_PAGE.cta.title}
+      sub={null}
+      primaryLabel={USE_CASES_PAGE.cta.primaryLabel}
+      primaryHref="/#cta"
+      secondaryLabel={USE_CASES_PAGE.cta.secondaryLabel}
+      secondaryHref="/quality"
+    />
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>

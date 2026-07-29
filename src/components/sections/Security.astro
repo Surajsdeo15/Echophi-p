@@ -16,7 +16,8 @@ import { SECURITY_BADGES, SECURITY_CHECKS } from "../../data/home";
         <h2 class="display-lg">Enterprise-grade security & compliance</h2>
       </div>
 
-      <div class="security__panel">
+      <div class="security__panel" data-security-panel>
+        <div class="security__spotlight" aria-hidden="true"></div>
         <div class="security__badges">
           {
             SECURITY_BADGES.map((b) => (
@@ -59,11 +60,39 @@ import { SECURITY_BADGES, SECURITY_CHECKS } from "../../data/home";
   </div>
 </section>
 
+<script>
+  function initSecuritySpotlight() {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    if (reduce || !canHover) return;
+
+    document.querySelectorAll<HTMLElement>("[data-security-panel]").forEach((panel) => {
+      const onMove = (e: MouseEvent) => {
+        const r = panel.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        panel.style.setProperty("--spot-x", `${x}%`);
+        panel.style.setProperty("--spot-y", `${y}%`);
+        panel.classList.add("is-spot-active");
+      };
+
+      const onLeave = () => {
+        panel.classList.remove("is-spot-active");
+      };
+
+      panel.addEventListener("mousemove", onMove);
+      panel.addEventListener("mouseleave", onLeave);
+    });
+  }
+
+  initSecuritySpotlight();
+</script>
+
 <style>
   .security {
     background: var(--bg);
     border-bottom: 1px solid var(--line);
-    padding-block: var(--sp-8);
+    padding-block: var(--section-pad);
   }
 
   .security__grid {
@@ -72,7 +101,7 @@ import { SECURITY_BADGES, SECURITY_CHECKS } from "../../data/home";
     gap: var(--sp-7);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 1024px) {
     .security__grid {
       grid-template-columns: 0.85fr 1.15fr;
       gap: var(--sp-8);
@@ -85,10 +114,40 @@ import { SECURITY_BADGES, SECURITY_CHECKS } from "../../data/home";
   }
 
   .security__panel {
+    --spot-x: 50%;
+    --spot-y: 50%;
+
+    position: relative;
+    isolation: isolate;
     background: var(--bg-elev);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
+  }
+
+  .security__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 280ms ease;
+    background: radial-gradient(
+      220px circle at var(--spot-x) var(--spot-y),
+      var(--blue-dim),
+      transparent 70%
+    );
+  }
+
+  .security__panel.is-spot-active .security__spotlight {
+    opacity: 1;
+    transition: opacity 120ms ease;
+  }
+
+  .security__badges,
+  .security__checks {
+    position: relative;
+    z-index: 1;
   }
 
   .security__badges {
@@ -178,5 +237,17 @@ import { SECURITY_BADGES, SECURITY_CHECKS } from "../../data/home";
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .security__spotlight {
+      display: none;
+    }
+  }
+
+  @media (hover: none) {
+    .security__spotlight {
+      display: none;
+    }
   }
 </style>

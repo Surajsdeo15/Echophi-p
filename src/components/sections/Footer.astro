@@ -22,21 +22,21 @@ import {
         </p>
       </div>
 
-      <div>
+      <div class="footer__col">
         <div class="footer__heading">Product</div>
         <div class="footer__links">
           {FOOTER_PRODUCT.map((l) => <a href={l.href}>{l.label}</a>)}
         </div>
       </div>
 
-      <div>
+      <div class="footer__col">
         <div class="footer__heading">Company</div>
         <div class="footer__links">
           {FOOTER_COMPANY.map((l) => <a href={l.href}>{l.label}</a>)}
         </div>
       </div>
 
-      <div>
+      <div class="footer__col">
         <div class="footer__heading">Contact</div>
         <div class="footer__links">
           <a href={CONTACT.telHref}>Call {CONTACT.tel}</a>
@@ -46,25 +46,31 @@ import {
     </div>
 
     <div class="footer__legal">
-      <span>© 2026 Echophi. All rights reserved.</span>
+      <span class="footer__copyright">© 2026 Echophi. All rights reserved.</span>
       <span class="footer__legal-links">
         <a href="#cta">Contact</a>
         <span>Privacy</span>
         <span>Terms</span>
       </span>
     </div>
+  </div>
 
-    <div class="footer__ticker">
+  <div class="footer__ticker">
+    <div class="footer__ticker-inner container">
       <span class="footer__ticker-live">Live quality</span>
-      {
-        TICKER.map((t) => (
-          <span class="footer__ticker-item">
-            <ChannelDot channel={t.key} />
-            <span class="footer__ticker-label">{t.label}</span>
-            <span class="footer__ticker-score">{t.score}</span>
-          </span>
-        ))
-      }
+      <div class="footer__ticker-viewport">
+        <div class="footer__ticker-track">
+          {
+            TICKER.map((t) => (
+              <span class="footer__ticker-item">
+                <ChannelDot channel={t.key} />
+                <span class="footer__ticker-label">{t.label}</span>
+                <span class="footer__ticker-score">{t.score}</span>
+              </span>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </div>
 </footer>
@@ -72,19 +78,39 @@ import {
 <style>
   .footer {
     background: var(--bg);
-    padding-block: var(--sp-8) var(--sp-6);
+    padding-block: var(--section-pad) 0;
   }
 
   .footer__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--sp-7);
+    gap: var(--sp-6);
   }
 
-  @media (min-width: 800px) {
+  .footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
     .footer__grid {
-      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-7);
     }
+  }
+
+  @media (min-width: 1024px) {
+    .footer__grid {
+      grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .footer__brand {
+      grid-column: auto;
+    }
+  }
+
+  .footer__col {
+    min-width: 0;
   }
 
   .footer__logo {
@@ -99,6 +125,7 @@ import {
     height: 14px;
     background: var(--blue);
     border-radius: var(--radius);
+    flex-shrink: 0;
   }
 
   .footer__word {
@@ -108,10 +135,16 @@ import {
 
   .footer__brand p {
     margin: 0;
-    max-width: 30ch;
+    max-width: none;
     font-size: 13px;
     line-height: 1.55;
     color: var(--text-dim);
+  }
+
+  @media (min-width: 1024px) {
+    .footer__brand p {
+      max-width: 30ch;
+    }
   }
 
   .footer__heading {
@@ -127,12 +160,18 @@ import {
   .footer__links {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 9px;
   }
 
   .footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
     font-size: 13px;
     color: var(--text-dim);
+    white-space: normal;
+    overflow-wrap: anywhere;
     transition: color 150ms ease;
   }
 
@@ -141,36 +180,56 @@ import {
   }
 
   .footer__legal {
-    margin-top: 36px;
-    padding-top: 20px;
+    margin-top: var(--sp-6);
+    padding-block: var(--sp-5);
     border-top: 1px solid var(--line);
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-3);
     font-size: 12px;
     color: var(--text-faint);
   }
 
+  @media (min-width: 768px) {
+    .footer__legal {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-4);
+    }
+  }
+
+  .footer__copyright {
+    white-space: normal;
+  }
+
   .footer__legal-links {
     display: flex;
-    gap: 18px;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
   }
 
   .footer__legal-links a {
     color: var(--text-faint);
+    white-space: nowrap;
   }
 
+  /* —— Live quality row (matches top ticker) —— */
   .footer__ticker {
-    margin-top: 18px;
+    margin-top: var(--sp-4);
     height: 32px;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .footer__ticker-inner {
+    height: 100%;
     display: flex;
     align-items: center;
     gap: var(--sp-4);
-    overflow-x: auto;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    background: var(--bg);
+    overflow: hidden;
   }
 
   .footer__ticker-live,
@@ -184,16 +243,92 @@ import {
     white-space: nowrap;
   }
 
+  .footer__ticker-live {
+    flex-shrink: 0;
+  }
+
+  .footer__ticker-viewport {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    container-type: inline-size;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 24px,
+      black calc(100% - 24px),
+      transparent
+    );
+  }
+
+  .footer__ticker-track {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-5);
+    width: max-content;
+    animation: footer-ticker-scroll 22s linear infinite;
+  }
+
   .footer__ticker-item {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .footer__ticker-score {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--text);
+  }
+
+  @keyframes footer-ticker-scroll {
+    from {
+      transform: translateX(100cqi);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .footer__ticker-viewport {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      mask-image: none;
+    }
+
+    .footer__ticker-viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .footer__ticker-track {
+      animation: none;
+      transform: none;
+      padding-right: var(--sp-2);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer__ticker-track {
+      animation: none;
+      transform: none;
+    }
+
+    @media (min-width: 1024px) {
+      .footer__ticker-viewport {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        mask-image: none;
+      }
+
+      .footer__ticker-viewport::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 </style>

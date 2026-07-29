@@ -14,10 +14,10 @@ import { CHANNEL_OVERVIEW } from "../../data/home";
       </p>
     </div>
 
-    <div class="channels__grid">
+    <div class="channels__grid bordered-grid bordered-grid--4">
       {
         CHANNEL_OVERVIEW.map((c) => (
-          <a class="channels__cell" href="#channels">
+          <a class="channels__cell" href={`#channel-${c.key}`} id={`channel-${c.key}`}>
             <div class="channels__head">
               <ChannelDot channel={c.key} />
               <span class="channels__label">{c.label}</span>
@@ -56,7 +56,7 @@ import { CHANNEL_OVERVIEW } from "../../data/home";
   .channels {
     background: var(--bg);
     border-bottom: 1px solid var(--line);
-    padding-block: var(--sp-8);
+    padding-block: var(--section-pad);
   }
 
   .channels__intro {
@@ -73,44 +73,14 @@ import { CHANNEL_OVERVIEW } from "../../data/home";
   }
 
   .channels__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    border: 1px solid var(--line);
     border-radius: var(--radius);
-  }
-
-  @media (min-width: 768px) {
-    .channels__grid {
-      grid-template-columns: 1fr 1fr;
-    }
+    overflow: hidden;
   }
 
   .channels__cell {
     display: block;
     padding: var(--sp-5);
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
     transition: background-color 150ms ease;
-  }
-
-  @media (min-width: 768px) {
-    .channels__cell:nth-child(2n) {
-      border-right: none;
-    }
-
-    .channels__cell:nth-last-child(-n + 2) {
-      border-bottom: none;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .channels__cell {
-      border-right: none;
-    }
-
-    .channels__cell:last-child {
-      border-bottom: none;
-    }
   }
 
   .channels__head {

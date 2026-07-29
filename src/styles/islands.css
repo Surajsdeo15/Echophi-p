@@ -16,7 +16,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 14px;
+  min-height: var(--tap-min);
+  padding: 10px 14px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
@@ -209,6 +210,7 @@
 .hero-demo__cta {
   display: inline-flex;
   align-items: center;
+  min-height: var(--tap-min);
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
@@ -450,12 +452,24 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: 18px 0;
+  min-height: var(--tap-min);
+  padding: 12px 0;
   text-align: left;
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
   color: var(--text);
+}
+
+.faq-acc__q-text {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+}
+
+.faq-acc__marker {
+  color: var(--blue);
+  flex-shrink: 0;
 }
 
 .faq-acc__icon {
