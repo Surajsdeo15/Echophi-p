@@ -1,0 +1,77 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+const apiKeyHeaders = `X-Api-Key: vp_live_…
+# or
+Authorization: Bearer vp_live_…`;
+---
+
+<DocsLayout title="Echophi — Authentication">
+  <h1>Authentication</h1>
+  <p>Partner requests authenticate with an API key or an OAuth2 client-credentials token.</p>
+
+  <h2>API key</h2>
+  <pre class="docs-pre">{apiKeyHeaders}</pre>
+
+  <h2>OAuth2 client credentials</h2>
+  <p>
+    Use a tenant confidential Keycloak client that includes <code>customer_id</code>. Send{" "}
+    <code>Authorization: Bearer &lt;access_token&gt;</code>. See{" "}
+    <code>voice-application-plane/infra/keycloak/partner-oauth.md</code> in the repo for setup.
+  </p>
+
+  <h2>Conventions</h2>
+  <div class="docs-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Concern</th>
+          <th>Rule</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Envelope</td>
+          <td>
+            <code>{"{ data, meta, error }"}</code>
+          </td>
+        </tr>
+        <tr>
+          <td>Pagination</td>
+          <td>
+            <code>page</code> / <code>page_size</code> → <code>meta.page</code>, <code>meta.page_size</code>,{" "}
+            <code>meta.total</code>
+          </td>
+        </tr>
+        <tr>
+          <td>Request ID</td>
+          <td>
+            <code>X-Request-Id</code> echoed on every response
+          </td>
+        </tr>
+        <tr>
+          <td>API version</td>
+          <td>
+            <code>X-API-Version: v1</code>
+          </td>
+        </tr>
+        <tr>
+          <td>Idempotency</td>
+          <td>
+            <code>Idempotency-Key</code> on POST / PUT / PATCH
+          </td>
+        </tr>
+        <tr>
+          <td>Rate limit</td>
+          <td>120 req/min per credential (plus gateway limits)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Workspace</h2>
+  <p>
+    Optional <code>X-Workspace-Id</code> must belong to the tenant. API keys resolve the org default workspace when
+    unset.
+  </p>
+</DocsLayout>

@@ -1,0 +1,12 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+---
+
+<DocsLayout title="Echophi — API versioning">
+  <h1>API versioning</h1>
+  <p>
+    The public Partner surface is <code>/api/external/v1</code>. Webhook endpoints pin{" "}
+    <code>api_version: v1</code> (default) and receive <code>X-API-Version: v1</code> on deliveries.
+  </p>
+  <p>Breaking changes will ship under a new major path or version pin — existing v1 contracts stay stable.</p>
+</DocsLayout>

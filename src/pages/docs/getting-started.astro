@@ -1,0 +1,58 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — Getting Started">
+  <h1>Getting Started</h1>
+  <p>
+    The Echophi Partner API is a stable REST surface (<code>/api/external/v1</code>) for CRM, ERP, and custom
+    backends. Authenticate with an API key, call Operate endpoints, and receive signed HTTPS webhooks when calls
+    change state.
+  </p>
+
+  <h2>Architecture</h2>
+  <ul>
+    <li>
+      <strong>REST</strong> — trigger conversations, read transcripts, manage contacts/campaigns, configure webhooks.
+    </li>
+    <li>
+      <strong>HTTPS webhooks</strong> — primary external notification (<code>conversation.*</code>, campaigns,
+      contacts).
+    </li>
+    <li>
+      <strong>Optional NATS</strong> — <code>partner.events.{"{customer_id}"}</code> for enterprise buses.
+    </li>
+    <li>
+      <strong>Internal only</strong> — JetStream <code>conv.events.*</code> is never exposed to partners.
+    </li>
+  </ul>
+
+  <h2>Authentication</h2>
+  <p>
+    Create a key in{" "}
+    <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+      Govern → Partner API
+    </a>{" "}
+    and send <code>X-Api-Key</code>. Details: <a href="/docs/authentication">Authentication</a>.
+  </p>
+
+  <h2>Next steps</h2>
+  <ol>
+    <li>
+      <a href="/docs/quickstart">Quickstart</a> — integrate in under 10 minutes
+    </li>
+    <li>
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>{" "}
+      — create webhook endpoints, Test, Recent Deliveries
+    </li>
+    <li>
+      <a href="/playground">Playground</a> — REST try-it (does not receive webhooks)
+    </li>
+    <li>
+      <a href="/api-reference">API Reference</a>
+    </li>
+  </ol>
+</DocsLayout>

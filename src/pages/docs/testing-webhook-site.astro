@@ -1,0 +1,25 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — Testing with webhook.site">
+  <h1>Testing with webhook.site</h1>
+  <ol>
+    <li>
+      Open <a href="https://webhook.site" target="_blank" rel="noreferrer">webhook.site</a> and copy your unique
+      URL.
+    </li>
+    <li>
+      Create a webhook endpoint with that URL in{" "}
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>
+      .
+    </li>
+    <li>Click Test — expect public <code>type: webhook.test</code> on webhook.site and in Recent Deliveries.</li>
+  </ol>
+  <p>
+    <a href="/docs/receive-webhooks">Receive webhooks</a>
+  </p>
+</DocsLayout>

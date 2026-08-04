@@ -1,0 +1,33 @@
+---
+import { DOCS_NAV } from "../../data/docs";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+---
+
+<aside id="docs-sidebar" class="docs-sidebar" data-docs-sidebar>
+  <nav aria-label="Documentation">
+    {
+      DOCS_NAV.map((section) => (
+        <div class="docs-section">
+          <p class="docs-section-title">{section.title}</p>
+          <ul>
+            {section.items.map((item) => {
+              const active = currentPath === item.href.replace(/\/$/, "");
+              return (
+                <li>
+                  <a href={item.href} class:list={[{ "is-active": active }]} aria-current={active ? "page" : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    }
+  </nav>
+</aside>

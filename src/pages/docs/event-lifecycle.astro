@@ -1,0 +1,32 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — Event lifecycle">
+  <h1>Event lifecycle</h1>
+  <ol>
+    <li>
+      Partner creates a conversation via REST.
+    </li>
+    <li>
+      Core dispatches the dial; JetStream <code>conv.events.*</code> stays internal.
+    </li>
+    <li>
+      Worker maps internal outbox events to the public Partner envelope, evaluates event subscriptions +{" "}
+      <code>agent.id</code> filters, then POSTs signed HTTPS webhooks (
+      <code>conversation.dispatched</code> → <code>connected</code> → <code>ended</code> / <code>failed</code>).
+    </li>
+    <li>
+      Optional external NATS subject <code>partner.events.{"{customer_id}"}</code> mirrors the same public payload
+      when enabled.
+    </li>
+  </ol>
+  <p>
+    Inspect each attempt under{" "}
+    <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+      Govern → Partner API → Recent Deliveries
+    </a>
+    .
+  </p>
+</DocsLayout>

@@ -1,0 +1,24 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — REST + Webhooks">
+  <h1>REST + Webhooks</h1>
+  <p>
+    Use REST for request/response operations (trigger calls, read contacts, manage campaigns). Use webhooks for
+    asynchronous outcomes so you do not poll every conversation.
+  </p>
+  <ul>
+    <li>
+      <a href="/playground">Playground</a> — execute REST only
+    </li>
+    <li>
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>{" "}
+      — register endpoints and inspect Recent Deliveries
+    </li>
+  </ul>
+  <p>Inbound events always POST to your HTTPS URL, never to the Playground.</p>
+</DocsLayout>

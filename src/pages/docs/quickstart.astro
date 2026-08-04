@@ -1,0 +1,101 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+
+const curlMe = `curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  https://echophi.variphi.com/api/external/v1/me`;
+
+const curlAgents = `curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  "https://echophi.variphi.com/api/external/v1/agents?page=1&page_size=20"`;
+
+const curlAgentDetail = `curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  https://echophi.variphi.com/api/external/v1/agents/$AGENT_ID`;
+
+const curlCreate = `curl -sS -X POST -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -H "Idempotency-Key: $(uuidgen)" \\
+  -d '{
+  "agent_id":"agt_…",
+  "phone_number":"+15551234567",
+  "variables":{"customer_name":"Ada","order_id":"123"}
+}' \\
+  https://echophi.variphi.com/api/external/v1/conversations`;
+
+const curlPostCall = `# Transcript
+curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  https://echophi.variphi.com/api/external/v1/conversations/$CONV_ID/transcript
+
+# Recording metadata (presigned URL when available)
+curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  https://echophi.variphi.com/api/external/v1/conversations/$CONV_ID/recording
+
+# Intent filter / structured extraction
+curl -sS -H "X-Api-Key: $ECHOPHI_API_KEY" \\
+  https://echophi.variphi.com/api/external/v1/conversations/$CONV_ID/extraction`;
+---
+
+<DocsLayout title="Echophi — Quickstart">
+  <h1>Quickstart</h1>
+  <p>
+    From an API key to a live call: start a conversation with an existing agent, then read transcript, recording, and
+    intent-filter extraction.
+  </p>
+
+  <h2>1. Create an API key</h2>
+  <p>
+    In the Echophi app, open{" "}
+    <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+      Govern → Partner API
+    </a>{" "}
+    (admin). Create a key and copy the secret once (<code>vp_live_…</code> or <code>vp_test_…</code>).
+  </p>
+
+  <h2>2. Confirm credentials</h2>
+  <pre class="docs-pre">{curlMe}</pre>
+
+  <h2>3. Pick an agent</h2>
+  <pre class="docs-pre">{curlAgents}</pre>
+  <p>
+    Copy an <code>agent_id</code>, then fetch detail for template <code>variables</code> (list responses omit them):
+  </p>
+  <pre class="docs-pre">{curlAgentDetail}</pre>
+  <p>
+    Use each <code>variables[].name</code> as a key in the create-conversation body map.
+  </p>
+
+  <h2>4. Start conversation with agent</h2>
+  <pre class="docs-pre">{curlCreate}</pre>
+  <p>
+    Optional <code>variables</code> is a string map of agent template variables. Status / outcome codes:{" "}
+    <a href="/docs/status-codes">Status codes</a> or{" "}
+    <code>GET /reference/statuses</code>.
+  </p>
+
+  <h2>5. Transcript, recording, extraction</h2>
+  <p>After the call progresses (or completes), use the conversation id:</p>
+  <pre class="docs-pre">{curlPostCall}</pre>
+
+  <h2>6. Try it in the browser</h2>
+  <p>
+    Use the <a href="/playground">Playground</a> or browse the curated{" "}
+    <a href="/api-reference">API Reference</a>.
+  </p>
+
+  <h2>7. Webhooks for call completion</h2>
+  <ol>
+    <li>
+      Open{" "}
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>
+      , add your HTTPS URL, copy the signing secret.
+    </li>
+    <li>Click Test — confirm <code>webhook.test</code> on your receiver and in Recent Deliveries.</li>
+    <li>
+      Start a conversation; when the call ends, receive <code>conversation.ended</code> and inspect it under View.
+    </li>
+    <li>
+      Verify HMAC — <a href="/docs/verify-hmac">guide</a>.
+    </li>
+  </ol>
+</DocsLayout>

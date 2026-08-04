@@ -2,9 +2,16 @@
 import Button from "../ui/Button.astro";
 import ThemeToggle from "../ui/ThemeToggle.astro";
 import ChannelDot from "../ui/ChannelDot.astro";
-import { NAV_PRIMARY, CHANNEL_ORDER, CHANNELS } from "../../data/home";
+import {
+  NAV_PRIMARY,
+  NAV_DOCUMENT,
+  CHANNEL_ORDER,
+  CHANNELS,
+} from "../../data/home";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
 
-const navLinks = NAV_PRIMARY.filter((item) => item.label !== "Channels");
+const DROPDOWN_LABELS = new Set(["Channels", "Document"]);
+const navLinks = NAV_PRIMARY.filter((item) => !DROPDOWN_LABELS.has(item.label));
 ---
 
 <header class="nav">
@@ -62,6 +69,62 @@ const navLinks = NAV_PRIMARY.filter((item) => item.label !== "Channels");
                       )}
                     </>
                   ))}
+                </div>
+              </div>
+            ) : item.label === "Document" ? (
+              <div class="nav__dropdown" data-nav-dropdown>
+                <button
+                  type="button"
+                  id="nav-document-trigger"
+                  class="nav__link nav__dropdown-trigger"
+                  aria-expanded="false"
+                  aria-haspopup="menu"
+                  aria-controls="nav-document-menu"
+                  data-nav-dropdown-trigger
+                >
+                  <span>{item.label}</span>
+                  <span class="nav__chevron" aria-hidden="true">▾</span>
+                </button>
+                <div
+                  id="nav-document-menu"
+                  class="nav__menu"
+                  role="menu"
+                  aria-labelledby="nav-document-trigger"
+                  data-nav-dropdown-menu
+                >
+                  {NAV_DOCUMENT.map((doc, idx) => (
+                    <>
+                      <a
+                        class="nav__menu-item"
+                        role="menuitem"
+                        href={doc.href}
+                        tabindex="-1"
+                        data-nav-menuitem
+                      >
+                        <span class="nav__menu-copy">
+                          <span class="nav__menu-name">{doc.label}</span>
+                          <span class="nav__menu-sub">{doc.description}</span>
+                        </span>
+                      </a>
+                      {idx < NAV_DOCUMENT.length - 1 && (
+                        <div class="nav__menu-divider" role="separator" aria-hidden="true" />
+                      )}
+                    </>
+                  ))}
+                  <div class="nav__menu-divider" role="separator" aria-hidden="true" />
+                  <div class="nav__menu-cta">
+                    <a
+                      class="nav__menu-api-key"
+                      role="menuitem"
+                      href={GOVERN_PARTNER_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      tabindex="-1"
+                      data-nav-menuitem
+                    >
+                      Get API key
+                    </a>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -141,6 +204,32 @@ const navLinks = NAV_PRIMARY.filter((item) => item.label !== "Channels");
                 </li>
               ))
             }
+          </ul>
+        </div>
+
+        <div class="nav__drawer-group">
+          <p class="nav__drawer-group-label">Document</p>
+          <ul class="nav__drawer-list">
+            {
+              NAV_DOCUMENT.map((doc) => (
+                <li>
+                  <a class="nav__drawer-link" href={doc.href} data-nav-drawer-link>
+                    <span>{doc.label}</span>
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a
+                class="nav__drawer-link nav__drawer-api-key"
+                href={GOVERN_PARTNER_URL}
+                target="_blank"
+                rel="noreferrer"
+                data-nav-drawer-link
+              >
+                Get API key
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -612,6 +701,56 @@ const navLinks = NAV_PRIMARY.filter((item) => item.label !== "Channels");
     height: 1px;
     margin: 0 4px;
     background: var(--line);
+  }
+
+  .nav__menu-cta {
+    padding: 6px 4px 4px;
+  }
+
+  .nav__menu-api-key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap-min);
+    padding: 10px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition:
+      color 150ms ease,
+      border-color 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .nav__menu-api-key:hover,
+  .nav__menu-api-key:focus-visible {
+    color: var(--text);
+    border-color: var(--blue);
+    background: var(--bg);
+    outline: none;
+  }
+
+  .nav__drawer-api-key {
+    justify-content: center;
+    margin-top: 6px;
+    border: 1px solid var(--line-strong);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .nav__drawer-api-key:hover,
+  .nav__drawer-api-key:focus-visible {
+    border-color: var(--blue);
   }
 
   .nav__actions {

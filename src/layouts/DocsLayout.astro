@@ -1,0 +1,71 @@
+---
+import Layout from "./Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import DocsSidebar from "../components/docs/DocsSidebar.astro";
+import "../styles/docs.css";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<Layout title={title}>
+  <Ticker />
+  <Nav />
+  <main class="docs-shell">
+    <div class="container docs-layout">
+      <button
+        type="button"
+        class="docs-mobile-toggle"
+        data-docs-toggle
+        aria-expanded="false"
+        aria-controls="docs-sidebar"
+      >
+        Docs menu
+      </button>
+      <DocsSidebar currentPath={pathname} />
+      <div class="docs-content">
+        <article class="docs-prose">
+          <div class="docs-eyebrow">
+            <span class="docs-eyebrow__label">Docs</span>
+            <span class="docs-eyebrow__rule" aria-hidden="true"></span>
+          </div>
+          <slot />
+        </article>
+      </div>
+    </div>
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>
+
+<script>
+  function initDocsSidebar() {
+    const toggle = document.querySelector<HTMLButtonElement>("[data-docs-toggle]");
+    const sidebar = document.querySelector<HTMLElement>("[data-docs-sidebar]");
+    if (!toggle || !sidebar) return;
+
+    toggle.addEventListener("click", () => {
+      const open = sidebar.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Hide docs menu" : "Docs menu";
+    });
+
+    sidebar.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        if (window.matchMedia("(min-width: 1024px)").matches) return;
+        sidebar.classList.remove("is-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.textContent = "Docs menu";
+      });
+    });
+  }
+
+  initDocsSidebar();
+</script>

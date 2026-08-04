@@ -1,0 +1,39 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — Partner Integration Guide">
+  <h1>Partner Integration Guide</h1>
+  <p>Recommended path from an empty tenant to live call lifecycle notifications.</p>
+  <ol>
+    <li>
+      Generate an API key in{" "}
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>
+      .
+    </li>
+    <li>
+      Configure a webhook endpoint (recommended) — Govern or{" "}
+      <a href={`/playground?op=${encodeURIComponent("post:/webhook-endpoints")}`}>Playground</a>{" "}
+      <code>POST /webhook-endpoints</code>.
+    </li>
+    <li>
+      Verify it using a test event (<code>POST /webhook-endpoints/{"{id}"}/test</code> or Govern{" "}
+      <strong>Test</strong>).
+    </li>
+    <li>
+      Start conversations using <code>POST /api/external/v1/conversations</code>.
+    </li>
+    <li>Receive lifecycle notifications on your webhook.</li>
+    <li>
+      Optionally subscribe to <code>partner.events.{"{customer_id}"}</code> if using NATS.
+    </li>
+  </ol>
+  <p>
+    Full step-by-step with Playground ops:{" "}
+    <a href="/docs/receive-webhooks">End-to-end Webhook Walkthrough</a>. HMAC details:{" "}
+    <a href="/docs/verify-hmac">Verify HMAC</a>.
+  </p>
+</DocsLayout>

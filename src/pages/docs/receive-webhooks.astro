@@ -1,0 +1,94 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+
+const envelopeJson = `{
+  "id": "evt_…",
+  "type": "conversation.ended",
+  "created_at": "2026-08-01T05:10:26Z",
+  "api_version": "v1",
+  "data": {
+    "customer": { "id": "cust_…" },
+    "agent": { "id": "agt_…" },
+    "conversation": { "id": "conv_…", "status": "completed" },
+    "call": { "id": "ac_…", "phone_number": null }
+  }
+}`;
+
+const filtersJson = `"filters": [
+  { "field": "agent.id", "operator": "in", "values": ["agt_sales", "agt_support"] }
+]`;
+---
+
+<DocsLayout title="Echophi — Receive Webhooks">
+  <h1>Receive Webhooks</h1>
+  <p>
+    Register an HTTPS URL in{" "}
+    <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+      Govern → Partner API
+    </a>
+    . Core POSTs a <strong>public</strong> signed JSON envelope when events occur — not the internal JetStream /
+    outbox shape. Optional: <code>description</code>, <code>api_version</code> (<code>v1</code>), event wildcards,
+    and <code>filters</code> on <code>agent.id</code>.
+  </p>
+
+  <h2>Public envelope (v1)</h2>
+  <pre class="docs-pre">{envelopeJson}</pre>
+  <p>
+    Playground / browser sessions may send <code>phone_number: null</code> (internal phone was{" "}
+    <code>N/A</code>).
+  </p>
+
+  <h2>Headers</h2>
+  <ul>
+    <li>
+      <code>X-Webhook-Id</code> — same as body <code>id</code>
+    </li>
+    <li>
+      <code>X-Webhook-Timestamp</code> — Unix seconds
+    </li>
+    <li>
+      <code>X-Webhook-Signature</code> — <code>sha256=&lt;hex&gt;</code> HMAC over raw body
+    </li>
+    <li>
+      <code>X-API-Version</code> — endpoint pin (<code>v1</code>)
+    </li>
+  </ul>
+
+  <h2>Catalog &amp; wildcards</h2>
+  <ul>
+    <li>
+      <code>conversation.dispatched|connected|ended|failed</code> or <code>conversation.*</code>
+    </li>
+    <li>
+      <code>campaign.started|paused|stopped|completed</code> or <code>campaign.*</code>
+    </li>
+    <li>
+      <code>contact.created|updated</code> or <code>contact.*</code>
+    </li>
+    <li>
+      <code>webhook.test</code> from Send Test
+    </li>
+  </ul>
+
+  <h2>Filters</h2>
+  <p>
+    Endpoints are owned by the customer (tenant). In Govern → Partner API the <strong>Filters</strong> editor
+    (Attribute / Operator / Values) builds the same <code>filters[]</code> body used by this API — admins see{" "}
+    <em>Agent</em> / <em>In</em>, not field paths.
+  </p>
+  <pre class="docs-pre">{filtersJson}</pre>
+  <p>
+    Operators: <code>eq</code>, <code>neq</code>, <code>in</code>, <code>not_in</code>. Catalog for UI labels and
+    enabled attributes: <code>GET /webhook-filter-metadata</code>. Unknown fields → <code>400</code>{" "}
+    <code>invalid_filter_field</code>. See <a href="/docs/status-codes">Status codes</a>.
+  </p>
+
+  <p>
+    After each attempt, open <strong>Recent Deliveries</strong> in Govern → Partner API. Your server must return{" "}
+    <code>2xx</code>.
+  </p>
+  <p>
+    Next: <a href="/docs/verify-hmac">Verify HMAC</a>.
+  </p>
+</DocsLayout>

@@ -1,0 +1,12 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+---
+
+<DocsLayout title="Echophi — Retry policy">
+  <h1>Retry policy</h1>
+  <p>
+    Outbox delivery retries on transport / non-2xx failures. Inspect attempts under Recent Deliveries (
+    <code>attempts</code>, <code>last_error</code>, <code>latency_ms</code>). There is no Partner-facing replay
+    inbox in v1 — fix your receiver and wait for the next event, or use Test.
+  </p>
+</DocsLayout>

@@ -1,0 +1,21 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+import { GOVERN_PARTNER_URL } from "../../data/docs";
+---
+
+<DocsLayout title="Echophi — Testing with ngrok">
+  <h1>Testing with ngrok</h1>
+  <ol>
+    <li>
+      Run a local HTTPS receiver, then <code>ngrok http 3000</code> (or your port).
+    </li>
+    <li>
+      Register the public ngrok URL in{" "}
+      <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+        Govern → Partner API
+      </a>
+      .
+    </li>
+    <li>Send Test, then trigger a conversation and confirm one public event per lifecycle step.</li>
+  </ol>
+</DocsLayout>

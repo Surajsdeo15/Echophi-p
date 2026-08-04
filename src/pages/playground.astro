@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Ticker from "../components/sections/Ticker.astro";
+import Nav from "../components/sections/Nav.astro";
+import Footer from "../components/sections/Footer.astro";
+import FloatingCta from "../components/sections/FloatingCta.astro";
+import ApiPlayground from "../islands/ApiPlayground";
+import { GOVERN_PARTNER_URL } from "../data/docs";
+import "../styles/docs.css";
+---
+
+<Layout title="Echophi — Playground">
+  <Ticker />
+  <Nav />
+  <main class="docs-shell">
+    <div class="container playground-page">
+      <header class="playground-intro docs-prose">
+        <div class="docs-eyebrow">
+          <span class="docs-eyebrow__label">Playground</span>
+          <span class="docs-eyebrow__rule" aria-hidden="true"></span>
+        </div>
+        <div class="playground-intro__head">
+          <h1>Playground</h1>
+          <a
+            class="playground-api-key"
+            href={GOVERN_PARTNER_URL}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Get API key
+          </a>
+        </div>
+        <p>Send live Partner Operate requests. Your key stays in sessionStorage only.</p>
+        <div class="docs-banner">
+          Create keys in
+          <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+            Govern → Partner API
+          </a>. Curated list matches the <a href="/api-reference">API Reference</a>. The Playground
+          only invokes REST — it does not receive inbound webhooks. Manage endpoints and Recent
+          Deliveries in
+          <a href={GOVERN_PARTNER_URL} target="_blank" rel="noreferrer">
+            Govern → Partner API
+          </a>.
+        </div>
+      </header>
+
+      <ApiPlayground client:load />
+    </div>
+  </main>
+  <Footer />
+  <FloatingCta href="/#try-it-live" />
+</Layout>

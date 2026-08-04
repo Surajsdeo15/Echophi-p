@@ -35,10 +35,29 @@ export const TICKER = CHANNEL_ORDER.map((key) => ({
 
 export const NAV_PRIMARY = [
   { label: "Channels", href: "/#channels" },
+  { label: "Document", href: "/docs/getting-started" },
   { label: "Quality", href: "/quality" },
   { label: "Use cases", href: "/use-cases" },
   { label: "Pricing", href: "/pricing" },
   { label: "Contact", href: "/contact" },
+] as const;
+
+export const NAV_DOCUMENT = [
+  {
+    label: "Docs",
+    href: "/docs/getting-started",
+    description: "Guides and getting started",
+  },
+  {
+    label: "API Reference",
+    href: "/api-reference",
+    description: "Endpoints and schemas",
+  },
+  {
+    label: "Playground",
+    href: "/playground",
+    description: "Try the API live",
+  },
 ] as const;
 
 export const DEMO = {

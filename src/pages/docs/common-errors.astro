@@ -1,0 +1,32 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+---
+
+<DocsLayout title="Echophi — Common errors">
+  <h1>Common errors</h1>
+  <p>
+    Partner APIs return a stable envelope with <code>error.code</code> and HTTP status. Full tables:{" "}
+    <a href="/docs/status-codes">Status codes</a>.
+  </p>
+  <ul>
+    <li>
+      <code>401 unauthorized</code> — missing/invalid API key
+    </li>
+    <li>
+      <code>403 forbidden</code> — missing permission
+    </li>
+    <li>
+      <code>400 invalid_filter_field</code> / <code>invalid_event</code> / <code>invalid_api_version</code> —
+      webhook registration contract
+    </li>
+    <li>
+      <code>422 validation_error</code> — malformed JSON or bad URL
+    </li>
+    <li>
+      <code>429 rate_limited</code> — slow down; honor <code>Retry-After</code>
+    </li>
+    <li>
+      <code>502 bad_gateway</code> — Test delivery to your URL failed
+    </li>
+  </ul>
+</DocsLayout>

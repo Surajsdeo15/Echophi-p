@@ -1,0 +1,14 @@
+---
+import DocsLayout from "../../layouts/DocsLayout.astro";
+---
+
+<DocsLayout title="Echophi — Rate limits">
+  <h1>Rate limits</h1>
+  <p>
+    Each credential is limited to <strong>120 requests per minute</strong>. Responses include{" "}
+    <code>X-RateLimit-*</code> headers; <code>429</code> includes <code>Retry-After</code>.
+  </p>
+  <p>
+    Usage is audited in Govern (<code>GET /api/v1/partner/usage</code>) with page sizes 20 / 50 / 100 (max 100).
+  </p>
+</DocsLayout>
