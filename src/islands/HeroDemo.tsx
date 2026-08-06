@@ -566,6 +566,7 @@ export default function HeroDemo({
             return (
               <button
                 type="button"
+                id={`tab-${key}`}
                 class={`hero-demo__tab${on ? " is-active" : ""}`}
                 role="tab"
                 aria-selected={on}
@@ -583,7 +584,7 @@ export default function HeroDemo({
         </div>
       )}
 
-      <div class="hero-demo__body">
+      <div class="hero-demo__body" role="tabpanel" aria-labelledby={`tab-${active}`}>
         <div class="hero-demo__label hd-reveal" data-hd-label>
           <span class="hero-demo__label-text">
             {CHANNELS[active].label} · live demo

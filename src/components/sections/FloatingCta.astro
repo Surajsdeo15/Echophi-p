@@ -33,6 +33,16 @@ const { href = "/#try-it-live" } = Astro.props;
     text-transform: uppercase;
     color: var(--text-dim);
     box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: float-enter 400ms ease 2s forwards;
+  }
+
+  @keyframes float-enter {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Below sm: compact pill so it doesn't cover footer links */

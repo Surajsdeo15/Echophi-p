@@ -13,7 +13,7 @@ def verify(secret: str, raw_body: bytes, header: str) -> bool:
     return hmac.compare_digest(want, header or "")`;
 ---
 
-<DocsLayout title="Echophi — Verify HMAC">
+<DocsLayout title="Verify HMAC Signatures | Echophi Docs" description="Validate webhook authenticity by verifying HMAC-SHA256 signatures on incoming payloads.">
   <h1>Verify HMAC</h1>
   <p>
     Every delivery includes <code>X-Webhook-Signature: sha256=&lt;hex&gt;</code> over the raw body using your

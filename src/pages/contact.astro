@@ -11,7 +11,7 @@ import Button from "../components/ui/Button.astro";
 import HeroDemo from "../islands/HeroDemo";
 ---
 
-<Layout title="Echophi — Contact">
+<Layout title="Contact Us | Echophi" description="Get in touch with the Echophi team. Book a demo or reach us via voice, WhatsApp, email, or SMS.">
   <Ticker />
   <Nav />
   <main class="contact-page">
@@ -39,7 +39,7 @@ import HeroDemo from "../islands/HeroDemo";
         </div>
 
         <Panel class="contact-form hero-2col__panel">
-          <form class="contact-form__body" action="#" method="post">
+          <form class="contact-form__body" action="#" method="post" aria-label="Contact form">
             <div class="contact-form__grid contact-form__grid--two">
               <label class="contact-field">
                 <span class="contact-field__label">Full name</span>
@@ -243,7 +243,7 @@ import HeroDemo from "../islands/HeroDemo";
   }
 
   .contact-form {
-    border-radius: 2px;
+    border-radius: var(--radius);
   }
 
   .contact-form__body {
@@ -284,7 +284,7 @@ import HeroDemo from "../islands/HeroDemo";
     width: 100%;
     min-height: 44px;
     border: 1px solid var(--line);
-    border-radius: 2px;
+    border-radius: var(--radius);
     background: var(--bg);
     color: var(--text);
     padding: 10px 12px;
@@ -371,7 +371,7 @@ import HeroDemo from "../islands/HeroDemo";
 
   .contact-form__submit {
     width: 100%;
-    border-radius: 2px !important;
+    border-radius: var(--radius) !important;
   }
 
   .contact-try {
@@ -402,7 +402,7 @@ import HeroDemo from "../islands/HeroDemo";
   }
 
   .contact-audio {
-    border-radius: 2px;
+    border-radius: var(--radius);
   }
 
   .contact-audio__row {
@@ -415,7 +415,7 @@ import HeroDemo from "../islands/HeroDemo";
     width: 34px;
     height: 34px;
     border: 1px solid var(--blue);
-    border-radius: 2px;
+    border-radius: var(--radius);
     background: var(--blue);
     color: var(--bg);
     box-shadow: 0 0 22px var(--blue-dim);
@@ -450,7 +450,7 @@ import HeroDemo from "../islands/HeroDemo";
   }
 
   .contact-try__demo :global(.hero-demo) {
-    border-radius: 2px;
+    border-radius: var(--radius);
   }
 
   @media (max-width: 400px) {

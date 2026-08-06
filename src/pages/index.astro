@@ -17,7 +17,25 @@ import Footer from "../components/sections/Footer.astro";
 import FloatingCta from "../components/sections/FloatingCta.astro";
 ---
 
-<Layout>
+<Layout title="Echophi — Virtual Omnichannel Platform" description="AI-powered voice, WhatsApp, email and SMS platform with human-feedback quality scoring. Automate conversations and maintain quality at scale.">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Echophi",
+      "url": "https://echophi.variphi.com",
+      "description": "Virtual omnichannel platform for Voice, WhatsApp, Email and SMS with a human-feedback quality layer.",
+      "sameAs": []
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Echophi",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "AI-powered omnichannel platform with human-feedback quality scoring for voice, WhatsApp, email and SMS."
+    })} />
+  </Fragment>
   <Ticker />
   <Nav />
   <main>

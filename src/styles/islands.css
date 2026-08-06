@@ -458,6 +458,15 @@
   font-family: var(--font-display);
   font-size: 16px;
   font-weight: 600;
+  color: var(--text-dim);
+  transition: color 150ms ease;
+}
+
+.faq-acc__q:hover {
+  color: var(--text);
+}
+
+.faq-acc__row.is-open .faq-acc__q {
   color: var(--text);
 }
 

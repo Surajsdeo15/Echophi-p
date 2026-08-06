@@ -1,12 +1,18 @@
 ---
 import "../styles/global.css";
 import "../styles/islands.css";
-
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = "Echophi — Virtual Omnichannel Platform" } = Astro.props;
+const {
+  title = "Echophi — Virtual Omnichannel Platform",
+  description = "Virtual omnichannel platform for Voice, WhatsApp, Email and SMS with a human-feedback quality layer.",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og-image.png", Astro.site);
 ---
 
 <!doctype html>
@@ -28,14 +34,35 @@ const { title = "Echophi — Virtual Omnichannel Platform" } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <meta
-      name="description"
-      content="Virtual omnichannel platform for Voice, WhatsApp, Email and SMS with a human-feedback quality layer."
-    />
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Font preload -->
+    <link rel="preload" href="/@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+
+    <slot name="head" />
   </head>
   <body>
     <slot />
+    <script>
+      import { revealOnView } from "../lib/revealOnView";
+      revealOnView();
+      document.addEventListener("astro:after-swap", () => revealOnView());
+    </script>
   </body>
 </html>

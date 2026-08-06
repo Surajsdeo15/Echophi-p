@@ -57,7 +57,7 @@ const tiers = [
 ] as const;
 ---
 
-<Layout title="Echophi — Pricing">
+<Layout title="Pricing Plans — Starter, Growth & Enterprise | Echophi" description="Transparent pricing for Echophi's AI omnichannel platform. Quality scoring, webhooks, and human oversight included at every tier.">
   <Ticker />
   <Nav />
   <main class="pricing-page">
@@ -354,7 +354,7 @@ const tiers = [
     height: 100%;
     background: var(--bg-elev);
     border: 1px solid var(--line);
-    border-radius: 2px;
+    border-radius: var(--radius);
     padding: var(--sp-5);
     box-shadow: none;
     transform-style: preserve-3d;
@@ -404,9 +404,9 @@ const tiers = [
     margin-bottom: var(--sp-4);
     padding: 5px 8px;
     border: 1px solid var(--blue);
-    border-radius: 2px;
+    border-radius: var(--radius);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -464,7 +464,7 @@ const tiers = [
 
   .pricing-tier__period {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-faint);
@@ -487,7 +487,7 @@ const tiers = [
 
   .pricing-tier__custom-meta {
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-faint);
@@ -495,13 +495,13 @@ const tiers = [
 
   .pricing-tier :global(.btn) {
     width: 100%;
-    border-radius: 2px;
+    border-radius: var(--radius);
     margin-bottom: var(--sp-4);
   }
 
   .pricing-tier__depth {
     border: 1px solid var(--line);
-    border-radius: 2px;
+    border-radius: var(--radius);
     padding: 12px;
     background: var(--bg);
     margin-bottom: var(--sp-4);
@@ -511,7 +511,7 @@ const tiers = [
     display: block;
     margin-bottom: 6px;
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-faint);
@@ -566,7 +566,7 @@ const tiers = [
     padding-top: var(--sp-4);
     border-top: 1px solid var(--line);
     font-family: var(--font-mono);
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-faint);
@@ -622,7 +622,7 @@ const tiers = [
   }
 
   .pricing-cta :global(.btn) {
-    border-radius: 2px;
+    border-radius: var(--radius);
     margin-top: var(--sp-2);
   }
 
